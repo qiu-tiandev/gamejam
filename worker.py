@@ -1,5 +1,7 @@
 import pygame
 from renderer import Renderer
+from animations import SpriteAnimation,TypingAnimation
+import renderer_manager
 pygame.init()# init shit
 #define screen stuff
 displayInfo = pygame.display.Info()
@@ -8,14 +10,14 @@ screen = pygame.display.set_mode((w,h))
 pygame.display.set_caption("Pygame") #title
 #mainloop
 clock = pygame.time.Clock()
-renderer = Renderer({},{"test":("Hello, World!","Arial",24,(0,0,0))})
-def getRenderer():
-    return renderer
+renderer_manager.setRenderer(Renderer(screen,{},{"test":("Hello, World!","Arial",24,(0,0,0))}))
+renderer = renderer_manager.getRenderer()
+dt = None
+sample = TypingAnimation("asasdajofjfoewfwfwdf", (100,100),"Arial",100,(0,0,0),1)
 while 1:
     dt = clock.tick(60)/1000  # cap at 60 fps
     renderer.setBackground((255,255,255),None)
     renderer.render(["test"],[(50,50)])
-    dt = pygame.time.Clock().tick(60)/1000 
     for event in pygame.event.get(): # basic quit on signal
         if event.type == pygame.QUIT:
             pygame.quit()
