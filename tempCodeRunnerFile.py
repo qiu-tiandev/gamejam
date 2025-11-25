@@ -10,7 +10,7 @@ screen = pygame.display.set_mode((w,h))
 pygame.display.set_caption("Pygame") #title
 #mainloop
 clock = pygame.time.Clock()
-renderer_manager.setRenderer(Renderer(screen,{},{"test":("Hello, World!","Arial",24,(0,0,0))}))
+renderer_manager.setRenderer(Renderer({},{"test":("Hello, World!","Arial",24,(0,0,0))}))
 renderer = renderer_manager.getRenderer()
 player = Player(None)
 while 1:
