@@ -27,10 +27,11 @@ class TypingAnimation: # WARNING NOT DONE
         self.font = font
         self.font_size = font_size
         self.color = color
-        self.SecondsPerChar = 1/speed
+        self.SecondsPerChar = 1/(5*speed)
         self.current_index = 0
         self.startTime= None
         self.currentText = ""
+        self.renderer.createText("TEMPTYPINGANIMATION","",self.font,self.font_size,self.color,True)
     def doTypingAnimation(self):
         if self.startTime is None:
             self.startTime = pygame.time.get_ticks()
@@ -39,5 +40,7 @@ class TypingAnimation: # WARNING NOT DONE
             if self.current_index == len(self.text)-1:
                 return True
             self.current_index += 1
-            self.renderer.createAndRenderText("TEMPTYPINGANIMATION",self.text[:self.current_index], self.font, self.font_size, self.color, self.position, cache=False)
+            self.renderer.createAndRenderText("TEMPTYPINGANIMATION",self.text[:self.current_index], self.font, self.font_size, self.color, self.position, True,True)
             self.startTime = pygame.time.get_ticks()
+        else:
+            self.renderer.render(["TEMPTYPINGANIMATION"],[self.position])

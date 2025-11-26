@@ -13,11 +13,12 @@ clock = pygame.time.Clock()
 renderer_manager.setRenderer(Renderer(screen,{},{"test":("Hello, World!","Arial",24,(0,0,0))}))
 renderer = renderer_manager.getRenderer()
 dt = None
-sample = TypingAnimation("asasdajofjfoewfwfwdf", (100,100),"Arial",100,(0,0,0),1)
+sample = TypingAnimation("Hello world. Dolorem ipsum....", (100,100),"Arial",20,(0,0,0),4)
 while 1:
     dt = clock.tick(60)/1000  # cap at 60 fps
     renderer.setBackground((255,255,255),None)
     renderer.render(["test"],[(50,50)])
+    sample.doTypingAnimation()
     for event in pygame.event.get(): # basic quit on signal
         if event.type == pygame.QUIT:
             pygame.quit()
