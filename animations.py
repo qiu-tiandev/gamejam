@@ -1,9 +1,9 @@
 import pygame
-import renderer_manager
+import util
 import console
 class SpriteAnimation:
     def __init__(self, spriteid:str, spriteSize:tuple[int,int],numSprites:int, position:tuple[int,int]):
-        self.renderer = renderer_manager.getRenderer()
+        self.renderer = util.getRenderer()
         self.spritesheet = self.renderer.getTexture(spriteid)
         self.position = position
         self.spriteid = spriteid
@@ -21,7 +21,7 @@ class SpriteAnimation:
         self.renderer.render(self.InternalCache[frame-1], [self.position])
 class TypingAnimation: # WARNING NOT DONE
     def __init__(self, text:str, position:tuple[int,int], font:str, font_size:int, color:tuple[int,int,int], speed:float):
-        self.renderer = renderer_manager.getRenderer()
+        self.renderer = util.getRenderer()
         self.text = text
         self.position = position
         self.font = font

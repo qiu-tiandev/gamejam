@@ -73,6 +73,7 @@ class Renderer:
         pygame.draw.polygon(texture, color, points)
         if cache:
             self.Imagetextures[id] = texture
+            print(f"Saved [{id}] to cache")
         return texture
     def createAndRenderSolidTexture(self,id:str, color:tuple[int,int,int], size:tuple[int,int], coordinates:tuple[int,int],numPoints:int,cache:bool=False):
         texture = self.createSolidTexture(id, color, size, numPoints, cache)
@@ -93,8 +94,35 @@ class Renderer:
                 self.background = background
                 self.background_path = color
         self.screen.blit(self.background, (0, 0))
+    def ResizeTexture(self,id:str,size:tuple[int,int],crop:bool,save=False):
+        original = self.getTexture(id)
+        originalw,originalh = original.get_size()
+        if not original:
+            console.sendError(f"Texture {id} cannot be found",__file__)
+            return
+        if crop:
+            crop_rect = pygame.Rect((originalw-size[0])//2, 0,size[0],originalh-(originalh-size[1]))
+            cropped_surface = original.subsurface(crop_rect)
+            if save:self.Imagetextures[id] = cropped_surface
+            return cropped_surface
+        resized_surface = pygame.transform.scale(original,size)
+        if save: self.Imagetextures[id] = resized_surface
+        return resized_surface
+            
     def getTexture(self,id:str):
         return self.Imagetextures.get(id) or self.TextTextures.get(id)
     def setVisibility(self, id:str, visible:bool):
         self.visibility[id] = visible 
- 
+    def cleanUp(self,ids):
+        if "ids" == all:
+            self.Imagetextures = {}
+            self.TextTextures = {}
+            return
+        for i in ids:
+            if self.Imagetextures.get(i):
+                self.Imagetextures.remove(i)
+                continue
+            elif self.TextTextures.get(i):
+                self.TextTextures.remove(i)
+                continue
+            console.sendError(f"Texture {i} is not found. ",__file__)
