@@ -31,9 +31,9 @@ class Renderer:
             if texture:
                 self.screen.blit(texture, (x, y))
             else:
-                console.sendError(f"Texture ID {obj.texture_id} not found in textures dictionary.", __file__)
-    def createText(self, id:str, text:str,font:str, font_size:int, color:tuple[int,int,int],cache:bool=True):
-        if self.Imagetextures.get(id) or self.TextTextures.get(id):
+                console.sendError(f"Texture ID {obj} not found in textures dictionary.", __file__)
+    def createText(self, id:str, text:str,font:str, font_size:int, color:tuple[int,int,int],cache:bool=True,silence=False):
+        if self.Imagetextures.get(id) or self.TextTextures.get(id) and not silence:
             console.sendWarning(f"Texture ID {id} already exists and will be overwritten.", __file__)
         font = self.getFont(font, font_size)
         texture = font.render(text, True, color)
@@ -52,8 +52,8 @@ class Renderer:
             return texture
         else:
             console.sendError(f"Image file {filepath} not found.", __file__)
-    def createAndRenderText(self,id:str, text:str,font:str, font_size:int, color:tuple[int,int,int], coordinates:tuple[int,int],cache:bool=False):
-        texture = self.createText(id, text,font, font_size, color, cache)
+    def createAndRenderText(self,id:str, text:str,font:str, font_size:int, color:tuple[int,int,int], coordinates:tuple[int,int],cache:bool=False,silence=False):
+        texture = self.createText(id, text,font, font_size, color, cache,silence)
         self.screen.blit(texture, coordinates)
     def createAndRenderImage(self,id:str, filepath:str,size:tuple[int,int], coordinates:tuple[int,int],cache:bool=False):
         texture = self.createImage(id,filepath,size, cache)
