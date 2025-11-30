@@ -13,7 +13,7 @@ class Renderer:
         self.background_path = None
         for p,i in Imagetextures.items():
             if os.path.exists(f"assets/{i}"):
-                self.Imagetextures[p] = pygame.image.load(f"assets/{i}").convert_alpha()
+                self.Imagetextures[p] = pygame.image.load(f"{os.path.join(os.getcwd(),f'assets/{i}')}").convert_alpha()
             else:
                 console.sendError(f"Texture file assets/{i} not found.", __file__)
         for p,i in TextTextures.items(): # (text,font, font_size, Color)
@@ -63,13 +63,21 @@ class Renderer:
             console.sendWarning(f"Creating solid texture with {numPoints} points may not render correctly.", __file__)
         texture = pygame.Surface(size,pygame.SRCALPHA)
         w,h = size
+        cx, cy = (w - 1) / 2.0, (h - 1) / 2.0
+        rx, ry = (w - 1) / 2.0, (h - 1) / 2.0
         radius = min(w,h)//2
         points = []
-        for i in range(numPoints):
-            angle = (2 * math.pi / numPoints) * i - math.pi / 2
-            x = w//2 + int(math.cos(angle) * radius)
-            y = h//2 + int(math.sin(angle) * radius)
-            points.append((x, y))
+        if numPoints == 3:
+            angles = [-math.pi/2, math.pi/6, 5*math.pi/6]
+            points = [(int(cx + math.cos(a) * rx), int(cy + math.sin(a) * ry)) for a in angles]
+        elif numPoints == 4:
+            points = [(0, 0), (w, 0), (w, h), (0, h)]
+        else:
+            for i in range(numPoints):
+                angle = (2 * math.pi / numPoints) * i - math.pi / 2
+                x = w//2 + int(math.cos(angle) * radius)
+                y = h//2 + int(math.sin(angle) * radius)
+                points.append((x, y))
         pygame.draw.polygon(texture, color, points)
         if cache:
             self.Imagetextures[id] = texture
@@ -93,8 +101,40 @@ class Renderer:
                 self.background = background
                 self.background_path = color
         self.screen.blit(self.background, (0, 0))
+    def ResizeTexture(self,id:str,size:list[int],crop:bool,save=False):
+        original = self.getTexture(id)
+        if not original:
+            console.sendError(f"Texture {id} cannot be found",__file__)
+            return
+        originalw,originalh = original.get_size()
+        size[0],size[1] = size[0] or originalw, size[1] or originalh
+        if originalw < size[0] or originalh < size[1]:
+            resized = pygame.transform.scale(original,size)
+            if save:self.Imagetextures[id] = resized
+            return resized
+        if crop:
+            crop_rect = pygame.Rect((originalw-size[0])//2, 0,size[0],originalh-(originalh-size[1]))
+            cropped_surface = original.subsurface(crop_rect)
+            if save:self.Imagetextures[id] = cropped_surface
+            return cropped_surface
+        resized_surface = pygame.transform.scale(original,size)
+        if save: self.Imagetextures[id] = resized_surface
+        return resized_surface
+            
     def getTexture(self,id:str):
         return self.Imagetextures.get(id) or self.TextTextures.get(id)
     def setVisibility(self, id:str, visible:bool):
         self.visibility[id] = visible 
- 
+    def cleanUp(self,ids):
+        if "ids" == all:
+            self.Imagetextures = {}
+            self.TextTextures = {}
+            return
+        for i in ids:
+            if self.Imagetextures.get(i):
+                self.Imagetextures.remove(i)
+                continue
+            elif self.TextTextures.get(i):
+                self.TextTextures.remove(i)
+                continue
+            console.sendError(f"Texture {i} is not found. ",__file__)
