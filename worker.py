@@ -3,6 +3,8 @@ from renderer import Renderer
 from animations import SpriteAnimation,TypingAnimation
 from player import Player
 import renderer_manager
+import console
+console.sendWarning("Example warning",__file__)
 pygame.init()# init shit
 #define screen stuff
 displayInfo = pygame.display.Info()
