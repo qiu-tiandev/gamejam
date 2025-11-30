@@ -11,7 +11,7 @@ class SpriteAnimation:
         self.numSpriteH = self.spritesheet.get_height() // spriteSize[1]
         if not self.spritesheet:
             console.sendError(f"Sprite ID {self.spriteid} not found for animation.", __file__)
-            return None
+            return
         self.InternalCache = []
         for HorizontalFrames in range(self.numSpriteW):
             for VerticalFrames in range(self.numSpriteH):
