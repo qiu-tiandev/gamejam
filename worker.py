@@ -2,7 +2,7 @@ import pygame
 from renderer import Renderer
 from animations import SpriteAnimation,TypingAnimation
 from player import Player
-import renderer_manager
+import util
 import console
 import util
 import entities
