@@ -13,13 +13,15 @@ class SpriteAnimation:
             console.sendError(f"Sprite ID {self.spriteid} not found for animation.", __file__)
             return
         self.InternalCache = []
-        for HorizontalFrames in range(self.numSpriteW):
-            for VerticalFrames in range(self.numSpriteH):
+        for VerticalFrames in range(self.numSpriteW):
+            for HorizontalFrames in range(self.numSpriteH):
                 rect = pygame.Rect(HorizontalFrames * spriteSize[0], VerticalFrames * spriteSize[1], spriteSize[0], spriteSize[1])
                 self.InternalCache.append(self.spritesheet.subsurface(rect))
+        for _ in range(self.numSpriteH*self.numSpriteW-numSprites):
+            self.InternalCache.pop()
     def doSpriteAnimation(self,frame:int):
         self.renderer.render(self.InternalCache[frame-1], [self.position])
-class TypingAnimation: # WARNING NOT DONE
+class TypingAnimation: 
     def __init__(self, text:str, position:tuple[int,int], font:str, font_size:int, color:tuple[int,int,int], speed:float):
         self.renderer = util.getRenderer()
         self.text = text

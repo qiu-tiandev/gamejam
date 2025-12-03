@@ -12,10 +12,10 @@ class Renderer:
         self.background = None
         self.background_path = None
         for p,i in Imagetextures.items():
-            if os.path.exists(f"assets/{i}"):
-                self.Imagetextures[p] = pygame.image.load(f"{os.path.join(os.getcwd(),f'assets/{i}')}").convert_alpha()
+            if os.path.exists(f"{os.path.join(os.path.dirname(__file__),f'assets/{i}')}"):
+                self.Imagetextures[p] = pygame.image.load(f"{os.path.join(os.path.dirname(__file__),f'assets/{i}')}").convert_alpha()
             else:
-                console.sendError(f"Texture file assets/{i} not found.", __file__)
+                console.sendError(f"Texture file {os.path.dirname(__file__)}/assets/{i} not found.", __file__)
         for p,i in TextTextures.items(): # (text,font, font_size, Color)
             texture = self.getFont(i[1],i[2]).render(i[0],True,i[3])
             self.TextTextures[p] = texture

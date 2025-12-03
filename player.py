@@ -15,8 +15,8 @@ class Player():
         self.multiplier = 50
         self.directions = {pygame.K_a: (-1,0),pygame.K_d:(1,0)}
         self.gravity = world.gravity
-        self.jump_duration = 0.6
-        self.peak_jump_duration = 0.1
+        self.jump_duration = 0.4
+        self.peak_jump_duration = 0.05
         self.jumping = False
         self.jumping_start = None 
         self.jump_power = 4
@@ -26,7 +26,7 @@ class Player():
         if keys:
             for key, direction in self.directions.items():
                 if keys[key]: 
-                    self.x += direction[0] * self.speed * self.dt * self.multiplier
+                    self.x += round(direction[0] * self.speed * self.dt * self.multiplier)
                     self.y += direction[1] * self.speed * self.dt * self.multiplier
             if keys[pygame.K_SPACE]:
                 if not self.jumping and self.ground.isTouchingGround(self.y):

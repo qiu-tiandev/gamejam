@@ -17,19 +17,22 @@ pygame.display.set_caption("Pygame") #title
 #mainloop
 clock = pygame.time.Clock()
 util.setRenderer(Renderer(screen,{"ground":"Stone Texture.jpg"},{}))
-renderer = util.getRenderer()
+renderer = util.getRenderer() 
 sample = TypingAnimation("Hello world. Dolorem ipsum....", (100,100),"Arial",20,(0,0,0),4)
-
+renderer.createSolidTexture("chest",(0,255,0),(50,50),4)
+renderer.createSolidTexture("placeholder-item", (0,0,255),(50,50),1000)
 sample_ground = entities.Ground(40,"ground")
-player = Player(World(200),sample_ground)
+sample_world = World(200,{})
+player = Player(sample_world,sample_ground)
+chestManager = entities.ChestManager(player,sample_ground,sample_world,"chest")
 while 1:
     util.SetDeltaTime()
     renderer.setBackground((255,255,255),None)
-    renderer.render(["test"],[(50,50)])
-    sample.doTypingAnimation()
-    player.move()
+    renderer.createAndRenderText("POSTEMP",str(player.x),"Arial",15,(0,0,0),(0,0),silence=True)
     sample_ground.renderGround(player)
-    dt = pygame.time.Clock().tick(60)/1000 
+    sample.doTypingAnimation()
+    chestManager.generateAndRenderChest()
+    player.move()  
     for event in pygame.event.get(): # basic quit on signal
         if event.type == pygame.QUIT:
             pygame.quit()
