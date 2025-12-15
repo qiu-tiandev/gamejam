@@ -22,9 +22,13 @@ class Renderer:
         console.sendInfo(f"Renderer initialized with {len(self.Imagetextures)} image textures and {len(self.TextTextures)} text textures.", __file__)
     def getFont(self,font,font_size:int):
         return self.fonts.get((font,font_size),pygame.font.SysFont(font,font_size))
-    def render(self, objects: list[str],coordinates:list[tuple[int,int]]):
-        for obj,(x,y) in zip(objects,coordinates):
-            if not self.visibility.get(obj,True): continue
+    def render(self, objects: list, coordinates: list[tuple[int,int]]):
+        for obj, (x, y) in zip(objects, coordinates):
+            if isinstance(obj, pygame.Surface):
+                self.screen.blit(obj, (x, y))
+                continue
+            if not self.visibility.get(obj, True):
+                continue
             texture = self.Imagetextures.get(obj) or self.TextTextures.get(obj)
             if not texture:
                 texture = self.TextTextures.get(obj)
