@@ -2,8 +2,9 @@ import util
 import pygame
 
 class World:
-    def __init__(self, gravity, chestLoot: dict = None):
+    def __init__(self, gravity, chestLoot: dict = None, themeColor:tuple[int,int,int]=(255,255,255)):
         self.gravity = gravity
+        self.themeColor = themeColor
         if chestLoot is None:
             self.chestLoot = {
                 "bones": (1, 3),

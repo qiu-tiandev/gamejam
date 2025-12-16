@@ -57,7 +57,7 @@ class ItemEntityManager:
         old_groundy = self.groundy
         self._cached_dims = (w, h)
         self.groundy = h - self.ground.height - 32
-        self._scale_factor = max(0.5, h / 720)
+        self._scale_factor = max(0.5, h // 720)
         if old_groundy != 0 and old_groundy != self.groundy:
             for item in self.items:
                 item["pos"] = (item["pos"][0], self.groundy)
@@ -123,6 +123,15 @@ class ChestManager:
         self.groundy = 0
         self.screenx = 0
         self.updateGroundY()
+
+    def is_far_enough(self, pos: int) -> bool:
+        """Ensure a new chest is at least minDist away from all existing chests."""
+        for existing in self.chests.values():
+            if abs(pos - existing) < self.minDist:
+                return False
+        if self.lastChestPos is not None and abs(pos - self.lastChestPos) < self.minDist:
+            return False
+        return True
     def updateGroundY(self):
         w, h = util.getScreenDimensions()
         self._cached_dims = (w, h)
@@ -149,8 +158,8 @@ class ChestManager:
         if self.cooldown > 0:
             self.cooldown -=1
         if random.random() < self.spawnChance and self.cooldown == 0:
-            if not self.lastChestPos or abs(self.player.x - self.lastChestPos) > self.minDist:
-                chestPos = self.player.x + random.randint(self.screenx//2+50,self.screenx//2+300)
+            chestPos = self.player.x + random.randint(self.screenx//2+50,self.screenx//2+300)
+            if self.is_far_enough(chestPos):
                 self.chests[self.currentId] = chestPos
                 self.currentId+=1
                 self.lastChestPos = chestPos

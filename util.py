@@ -6,6 +6,7 @@ w =0
 h = 0
 itemID = {
     # --- General items (alphabetical) ---
+    "battery": 0,
     "bones": 1,
     "charcoal": 2,
     "cooked monster flesh": 3,
@@ -78,7 +79,7 @@ def getRenderer():
     return renderer
 def SetDeltaTime():
     global dt
-    dt = clock.tick(60)/1000
+    dt = clock.tick(120)/1000
 def getDeltaTime():
     return dt
 def SetScreenDimensions(nw,nh):
