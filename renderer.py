@@ -36,6 +36,9 @@ class Renderer:
                 self.screen.blit(texture, (x, y))
             else:
                 console.sendError(f"Texture ID {obj} not found in textures dictionary.", __file__)
+
+    def render_surface(self, surface, position:tuple[int,int]):
+        self.screen.blit(surface, position)
     def createText(self, id:str, text:str,font:str, font_size:int, color:tuple[int,int,int],cache:bool=True,silence=False):
         if self.Imagetextures.get(id) or self.TextTextures.get(id) and not silence:
             console.sendWarning(f"Texture ID {id} already exists and will be overwritten.", __file__)

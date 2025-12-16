@@ -9,16 +9,29 @@ class Ground:
         self.renderer.ResizeTexture(self.id,[None,height],True,True)
         self.texture = self.renderer.getTexture(self.id)
         self.texture_width = self.texture.get_width()
+        self._cached_dims = (0, 0)
+        self._screenx = 0
+        self._screeny = 0
+        self._updateDims()
+    def _updateDims(self):
+        w, h = util.getScreenDimensions()
+        self._cached_dims = (w, h)
+        self._screenx = w
+        self._screeny = h
     def renderGround(self,player):
-        offset = -(player.x%self.texture_width)
-        screenx,screeny = util.getScreenDimensions()
+        dims = util.getScreenDimensions()
+        if dims != self._cached_dims:
+            self._updateDims()
+        offset = -(player.x % self.texture_width)
+        screenx = self._screenx
+        screeny = self._screeny
         x = offset - self.texture_width if offset > 0 else offset
         while x < screenx:
             src = max(0, -x)
             dst = max(0, x)
             visible_width = min(self.texture_width - src, screenx - dst)
             cropped = self.texture.subsurface(pygame.Rect(src, 0, visible_width, self.height))
-            self.renderer.screen.blit(cropped, (dst, screeny - self.height))
+            self.renderer.render_surface(cropped, (dst, screeny - self.height))
             x += self.texture_width
 
     def isTouchingGround(self,y):
@@ -35,7 +48,19 @@ class ItemEntityManager:
         self.inventoryManager = inventory
         self.ground = ground
         self.renderer = util.getRenderer()
-        self.groundy = util.getScreenDimensions()[1]-ground.height-32
+        self._cached_dims = (0, 0)
+        self._scale_factor = 1.0
+        self.groundy = 0
+        self.updateGroundY()
+    def updateGroundY(self):
+        w, h = util.getScreenDimensions()
+        old_groundy = self.groundy
+        self._cached_dims = (w, h)
+        self.groundy = h - self.ground.height - 32
+        self._scale_factor = max(0.5, h / 720)
+        if old_groundy != 0 and old_groundy != self.groundy:
+            for item in self.items:
+                item["pos"] = (item["pos"][0], self.groundy)
     def addItemEntities(self,id:int,amount:int,pos:tuple[int,int]):
         now = pygame.time.get_ticks()
         count = min(amount, 10)
@@ -62,17 +87,22 @@ class ItemEntityManager:
     def RenderItemEntities(self):
         if not self.items:
             return
+        dims = util.getScreenDimensions()
+        if dims != self._cached_dims:
+            self.updateGroundY()
         render_ids = []
         render_pos = []
+        scale_factor = self._scale_factor
+        player_x = self.player.x
         for i in self.items:
-            itemX,itemY = i["pos"]
-            pos = isOnScreen(itemX,self.player.x)
+            itemX, itemY = i["pos"]
+            pos = isOnScreen(itemX, player_x)
             if pos is not None:
                 tex_id = f"items_{i['id']:03d}"
                 if self.renderer.getTexture(tex_id) is None:
                     tex_id = "placeholder-item"
                 render_ids.append(tex_id)
-                render_pos.append((pos,itemY))
+                render_pos.append((int(pos), int(itemY)))
         if render_ids:
             self.renderer.render(render_ids, render_pos)
 class ChestManager:
@@ -80,16 +110,24 @@ class ChestManager:
         self.id = id
         self.renderer= util.getRenderer()
         self.player = player
-        self.groundy = util.getScreenDimensions()[1]-ground.height-50
+        self.ground = ground
         self.spawnChance = 1/2500
         self.cooldown = 240
         self.chests = {0:200}  #id: chestpos| starter chest will gen x=200
         self.lastChestPos = None
         self.minDist = 500
-        self.screenx,_ = util.getScreenDimensions()
         self.loot =  world.chestLoot # (item name -> (min,max))
         self.currentId = 1
         self.itemManager = itemManager
+        self._cached_dims = (0, 0)
+        self.groundy = 0
+        self.screenx = 0
+        self.updateGroundY()
+    def updateGroundY(self):
+        w, h = util.getScreenDimensions()
+        self._cached_dims = (w, h)
+        self.groundy = h - self.ground.height - 50
+        self.screenx = w
     def lootChest(self):
         playerx = self.player.x
         playery = self.player.y
@@ -104,6 +142,9 @@ class ChestManager:
                     del self.chests[n]
                     break
     def generateAndRenderChest(self):
+        dims = util.getScreenDimensions()
+        if dims != self._cached_dims:
+            self.updateGroundY()
         self.lootChest()
         if self.cooldown > 0:
             self.cooldown -=1

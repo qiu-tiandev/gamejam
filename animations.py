@@ -27,8 +27,13 @@ class SpriteAnimation:
                     continue
             self.renderer.Imagetextures[f"{prefix}_{index:03d}"] = frame
             index += 1
-    def doSpriteAnimation(self,frame:int,position:tuple[int,int]):
-        self.renderer.render([self.InternalCache[frame-1]], [position])
+    def doSpriteAnimation(self, frame:int, position:tuple[int,int], size:tuple[int,int]|None=None):
+        surf = self.InternalCache[frame-1]
+        if size and (surf.get_width() != size[0] or surf.get_height() != size[1]):
+            scaled = pygame.transform.scale(surf, size)
+            self.renderer.render([scaled], [position])
+        else:
+            self.renderer.render([surf], [position])
 class TypingAnimation: 
     def __init__(self, text:str, position:tuple[int,int], font:str, font_size:int, color:tuple[int,int,int], speed:float):
         self.renderer = util.getRenderer()
