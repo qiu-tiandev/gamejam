@@ -303,13 +303,11 @@ def create_world_entities(world_index):
             world_crafting_recipes[item] = recipe
     
     # World-specific cooking recipes (smelting)
-    world_cooking_recipes = {}
+    world_cooking_recipes = {"recipes": {}}
     if world_index >= 1:  # Limbo
-        world_cooking_recipes.update({
-            "recipes": {
-                "Chalk": [(1, "Calcium", 1)],
-                "Ash": [(1,"bones",1)]
-            }
+        world_cooking_recipes["recipes"].update({
+            "Chalk": [(1, "Calcium", 1)],
+            "Ash": [(1,"bones",1)]
         })
     if world_index >= 3:  # Planet-Z
         world_cooking_recipes["recipes"]["Sapphire"] = [(1, "Chalk", 1)]
@@ -705,16 +703,13 @@ while not time_machine_used:
         player.last_food_time = pygame.time.get_ticks() // 1000  # Reset hunger timer after grace period
     
     if not is_paused:  # Only update game logic when not paused
-        fps = int(util.clock.get_fps())
         renderer.setBackground((255,255,255),None)
         sky.render(player.x)
         text_color = util.getContrastColor(current_world.themeColor)
-        renderer.createAndRenderText("POSTEMP",str(player.x),"Arial",15,text_color,(0,0),silence=True)
-        renderer.createAndRenderText("FPSCOUNT", f"FPS: {fps}", "Arial", 14, text_color, (w//2 - 30, 5), cache=False, silence=True)
         
-        # Display current world name
-        world_name_text = f"World: {current_world.world_name}"
-        renderer.createAndRenderText("world_name", world_name_text, "Arial", 14, text_color, (w - 150, 5), cache=False, silence=True)
+        # display current world
+        world_text = f"World: {current_world.world_name}"
+        renderer.createAndRenderText("world_display", world_text, "Arial", 14, text_color, (w//2 - 60, 5), cache=False, silence=True)
         
         ground.renderGround(player)
         
