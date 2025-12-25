@@ -18,7 +18,7 @@ displayInfo = pygame.display.Info()
 w,h = displayInfo.current_w//2, displayInfo.current_h//2
 util.SetScreenDimensions(w,h)
 screen = pygame.display.set_mode((w,h), pygame.RESIZABLE | pygame.DOUBLEBUF)
-pygame.display.set_caption("Pygame")
+pygame.display.set_caption("KCIT")
 clock = pygame.time.Clock()
 util.setRenderer(Renderer(screen, {"chest": "Chest.png", "ground": "ground_1.png", "sky1": "Sky1.png", "general_items": "general_items.png", "cooker_spritesheet": "cooker.png", "time_machine_block": "time_machine.png", "player_spritesheet": "player.png"}, {"crafting_title": ("Crafting", "arial", 24, (255, 255, 255))}))
 renderer = util.getRenderer()
