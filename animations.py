@@ -18,8 +18,8 @@ class SpriteAnimation:
                 self.InternalCache.append(self.spritesheet.subsurface(rect))
         for _ in range(self.numSpriteH*self.numSpriteW-numSprites):
             self.InternalCache.pop()
-    def save_frames(self, prefix:str, skip_empty:bool=True):
-        index = 1
+    def save_frames(self, prefix:str,start=1, skip_empty:bool=True):
+        index = start
         for frame in self.InternalCache:
             if skip_empty:
                 rect = frame.get_bounding_rect()

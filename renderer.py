@@ -47,11 +47,11 @@ class Renderer:
         if cache:
             self.TextTextures[id] = texture
         return texture
-    def createImage(self, id:str, filepath:str,size:tuple[int,int],cache:bool=True):
+    def createImage(self, id:str, filepath:str,size:tuple[int,int]=None,cache:bool=True):
         if self.Imagetextures.get(id) or self.TextTextures.get(id):
             console.sendWarning(f"Texture ID {id} already exists and will be overwritten.", __file__)
-        if os.path.exists(filepath):
-            texture = pygame.image.load(filepath).convert_alpha()
+        if os.path.exists(f"{os.path.join(os.path.dirname(__file__),f'assets/{filepath}')}"):
+            texture = pygame.image.load(f"{os.path.join(os.path.dirname(__file__),f'assets/{filepath}')}").convert_alpha()
             if size:
                 texture= pygame.transform.scale(texture, size)
             if cache:
@@ -59,6 +59,15 @@ class Renderer:
             return texture
         else:
             console.sendError(f"Image file {filepath} not found.", __file__)
+    
+    def loadTexture(self, filepath:str, id:str):
+        if self.Imagetextures.get(id) or self.TextTextures.get(id):
+            return  # Already loaded
+        if os.path.exists(f"{os.path.join(os.path.dirname(__file__),f'assets/{filepath}')}"):
+            texture = pygame.image.load(f"{os.path.join(os.path.dirname(__file__),f'assets/{filepath}')}").convert_alpha()
+            self.Imagetextures[id] = texture
+        else:
+            console.sendError(f"Texture file {filepath} not found.", __file__)
     def createAndRenderText(self,id:str, text:str,font:str, font_size:int, color:tuple[int,int,int], coordinates:tuple[int,int],cache:bool=False,silence=False):
         texture = self.createText(id, text,font, font_size, color, cache,silence)
         self.screen.blit(texture, coordinates)
@@ -139,9 +148,9 @@ class Renderer:
             return
         for i in ids:
             if self.Imagetextures.get(i):
-                self.Imagetextures.remove(i)
+                del self.Imagetextures[i]
                 continue
             elif self.TextTextures.get(i):
-                self.TextTextures.remove(i)
+                del self.TextTextures[i]
                 continue
             console.sendError(f"Texture {i} is not found. ",__file__)
