@@ -633,13 +633,13 @@ intro_explosion_played = False
 # Define items unlocked per world
 WORLD_UNLOCKS = {
     0: [],  # Void - no unlocks (starting world)
-    1: [22, 23, 24, 25, 26],  # Limbo unlocks Void items
-    2: [27, 28, 29, 30, 31, 32, 33],  # Interstella unlocks Limbo items
-    3: [34, 35, 36, 37],  # Planet-Z unlocks Interstella items
-    4: [38, 39, 49, 41],  # #AWRZ-P unlocks Planet-Z items
-    5: [42, 43, 44],  # Blackhole unlocks #AWRZ-P items
-    6: [45, 46, 47, 48],  # Whitehole unlocks Blackhole items
-    7: [49, 50, 51],  # Completion unlocks Whitehole items
+    1: [27, 28, 29, 30, 31, 32, 33],  # Limbo unlocks Void items
+    2: [34, 35, 36, 37],  # Interstella unlocks Limbo items
+    3: [38, 39, 49, 41],  # Planet-Z unlocks Interstella items
+    4: [42, 43, 44],  # #AWRZ-P unlocks Planet-Z items
+    5: [45, 46, 47, 48],  # Blackhole unlocks #AWRZ-P items
+    6: [49, 50, 51],  # Whitehole unlocks Blackhole items
+    7: []  # Completion unlocks Whitehole items
 }
 
 # Initialize tutorial
@@ -656,14 +656,14 @@ while intro_active:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             if start_screen_active:
                 # Transition from start screen to spaceship animation
                 start_screen_active = False
                 pygame.mixer.music.stop()  # Stop music when leaving start screen
                 intro_start_time = pygame.time.get_ticks()  # Start timing the spaceship animation
             else:
-                # Skip intro on any input during spaceship animation
+                # Skip intro on click during spaceship animation
                 intro_active = False
 
 while not time_machine_used:
@@ -759,8 +759,7 @@ while not time_machine_used:
         if not tutorialManager.is_active:
             inventory.renderHeldItem(player)
         
-        mem_mb = round(proc.memory_info().rss / (1024 * 1024),3)
-        renderer.createAndRenderText("MEMUSAGE", f"Memory: {mem_mb} MB", "Arial", 12, text_color, (10, 0), cache=False, silence=True)
+        renderer.createAndRenderText("OBJECTIVE", "Objective: Get time machine to progress", "Arial", 12, text_color, (10, 0), cache=False, silence=True)
     
     # Update health/hunger ALWAYS (not just when not paused) so pause tracking works (not in tutorial)
     if not grace_period_active and not tutorialManager.is_active and not death_screen_active:
@@ -918,10 +917,11 @@ while not time_machine_used:
         text_color = util.getContrastColor(current_world.themeColor)
         renderer.createAndRenderText("item_description", item_description, "Arial", 14, text_color, (w // 2 - len(item_description) * 3, description_y), cache=False, silence=True)
         guide_y = 70  # Move keybind guide down if description is shown
-        
-        # Re-render keybind guide at new position if it exists
-        if keybind_guide:
-            renderer.createAndRenderText("keybind_guide", keybind_guide, "Arial", 16, text_color, (w // 2 - len(keybind_guide) * 4, guide_y), cache=False, silence=True)
+    
+    # Render keybind guide (independent of item description)
+    if keybind_guide and not tutorialManager.is_active:
+        text_color = util.getContrastColor(current_world.themeColor)
+        renderer.createAndRenderText("keybind_guide", keybind_guide, "Arial", 16, text_color, (w // 2 - len(keybind_guide) * 4, guide_y), cache=False, silence=True)
     
     # Only update monster logic if not in grace period and not in tutorial
     if not grace_period_active and not tutorialManager.is_active and not death_screen_active:

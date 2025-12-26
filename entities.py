@@ -63,7 +63,7 @@ class ItemEntityManager:
                 item["pos"] = (item["pos"][0], self.groundy)
     
     def spawnRandomItems(self):
-        if random.random() < 0.00075:
+        if random.random() < 0.00055:
             mysterious_meat_id = util.getItemID("mysterious meat")
             if mysterious_meat_id >= 0:
                 screen_width = util.getScreenDimensions()[0]
@@ -688,7 +688,7 @@ class MonsterManager:
         # self.renderMonsters()  # Moved to separate render call
 
 
-class BeaconManager():
+class BeaconManager:
     def __init__(self, player, ground, block_manager, monster_manager):
         self.player = player
         self.ground = ground
@@ -698,7 +698,7 @@ class BeaconManager():
         
         # Beacon laser properties (1/3 the player's rate)
         self.laser_cooldown_time = 1.5  # Player is 0.1, so beacon is 15x slower
-        self.beacon_range = 10000  # Infinite range since lasers don't collide with blocks
+        self.beacon_range = 500  # Limited range of 500 pixels
         self.beacons = {}  # Dict mapping beacon block id to beacon state
         
     def update(self, dt, is_paused=False):
@@ -743,7 +743,7 @@ class BeaconManager():
                 
                 for monster in self.monster_manager.monsters:
                     dx = monster["x"] - beacon_center_x
-                    dy = monster["y"] + self.monster_manager.monster_size // 2 - beacon_center_y
+                    dy = monster["y"] - self.monster_manager.monster_size // 4 - beacon_center_y
                     dist = (dx**2 + dy**2) ** 0.5
                     if dist < nearest_dist:
                         nearest_dist = dist
@@ -752,7 +752,7 @@ class BeaconManager():
                 # Shoot laser at nearest zombie if within range
                 if nearest_monster and nearest_dist <= self.beacon_range:
                     target_x = nearest_monster["x"]
-                    target_y = nearest_monster["y"] + self.monster_manager.monster_size // 2  # Aim at monster center
+                    target_y = nearest_monster["y"] - self.monster_manager.monster_size // 4  # Aim at monster middle/top
                     dx = target_x - beacon_center_x
                     dy = target_y - beacon_center_y
                     distance = (dx**2 + dy**2) ** 0.5

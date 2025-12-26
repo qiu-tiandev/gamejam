@@ -32,7 +32,7 @@ class TutorialManager:
         # Tutorial paragraphs
         self.paragraphs = [
             "Where am I? This place looks strange...",
-            "Hi human, you are now trapped in the future, and you will have to time travel to get back to your time. Usual controls: A,D,SPACE",
+            "Hi human, you are now trapped in the future, and you will have to time travel to get back to your time. Usual controls: A,D,SPACE. HINT: Use time travel machine",
             "Press E to open the Crafting Menu. Click on items to craft them. You need the required materials. HINT: Use it to view recipes for time travelling!",
             "Place a Cooker block by selecting it and pressing W. Press S near the Cooker to open the Smelting Menu.",
             "Use the Laser Gun to shoot enemies. Left click to fire. The gun uses energy.",
