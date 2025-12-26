@@ -3,127 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kCIT - Game Demo</title>
+    <title>KCIT - Game Demo</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            padding: 40px;
+            font-family: Arial, sans-serif;
             max-width: 600px;
-            text-align: center;
+            margin: 50px auto;
+            padding: 20px;
         }
 
         h1 {
-            color: #333;
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            text-align: center;
         }
 
         .disclaimer {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 30px;
-            text-align: left;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 20px 0;
         }
 
         .disclaimer h2 {
-            color: #d39e00;
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-
-        .disclaimer p {
-            color: #856404;
-            font-size: 1em;
-            line-height: 1.5;
+            margin-top: 0;
         }
 
         .play-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.1em;
-            border-radius: 5px;
+            display: block;
+            margin: 30px auto;
+            padding: 10px 30px;
+            font-size: 1em;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .play-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .play-button:active {
-            transform: translateY(0);
         }
 
         .footer {
+            text-align: center;
             margin-top: 40px;
-            color: #666;
             font-size: 0.9em;
-        }
-
-        .demo-notice {
-            background: #f0f0f0;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            color: #555;
-            font-size: 0.95em;
+            color: #666;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>KCIT</h1>
-        
-        <div class="demo-notice">
-            KCIT Game Demo
-        </div>
+    <h1>Gamejam</h1>
 
-        <div class="disclaimer">
-            <h2>Disclaimer</h2>
-            <p>
-                This is a <strong>demo version</strong> of kCIT running in your browser using Pygbag (Python on WebAssembly).
-                <br><br>
-                <strong>Please note:</strong> The game may experience performance issues and lag due to browser limitations and the overhead of running Python in WebAssembly. Full screen is <strong>REQUIRED</strong> for the web version of this game.
-                <br><br>
-                This demo is intended for testing and demonstration purposes only. For the best experience, please play the native desktop version.
-            </p>
-        </div>
-
-        <button class="play-button" onclick="window.location.href='play'">
-            Play Game
-        </button>
-
-        <div class="footer">
-            <p>&copy; 2025 kCIT Game Demo. All rights reserved.</p>
-        </div>
+    <div class="disclaimer">
+        <h2>Disclaimer</h2>
+        <p>
+            This is a <strong>demo version</strong> of KCIT running in your browser using Pygbag (Python on WebAssembly).
+        </p>
+        <p>
+            <strong>Please note:</strong> The game may experience performance issues and lag due to browser limitations and the overhead of running Python in WebAssembly. Full screen is <strong>REQUIRED</strong> for this game.
+        </p>
+        <p>
+            This demo is intended for testing and demonstration purposes only. For the best experience, please play the native desktop version.
+        </p>
     </div>
+
+    <button class="play-button" onclick="window.location.href='play'">
+        Play Game
+    </button>
 </body>
 </html>
