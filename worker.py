@@ -239,8 +239,8 @@ def create_world_entities(world_index):
         0: {  # Void
             "Beacon": [("metal scrap", 3), ("plastic scrap", 2), ("liquid fuel", 1), ("mysterious powder", 1)],
             "Magical Purple Screw": [("Purple Fragment", 5)],
-            "Purple Fragment": [("mysterious powder", 5), ("stone", 2)],
-            "Ruby": [("Sapphire",3),("mysterious powder",1)],
+            "Purple Fragment": [("mysterious powder", 5), ("Ruby", 2)],
+            "Ruby": [("metal scrap",5),("mysterious powder",2)],
             "time machine": [("Magical Purple Screw", 2), ("metal scrap", 5), ("Purple Fragment", 2), ("mysterious powder", 5), ("battery", 10), ("screwdriver", 1)]
         },
         1: {  # Limbo
@@ -660,10 +660,10 @@ while intro_active:
             if start_screen_active:
                 # Transition from start screen to spaceship animation
                 start_screen_active = False
-                pygame.mixer.music.stop()  # Stop music when leaving start screen
-                intro_start_time = pygame.time.get_ticks()  # Start timing the spaceship animation
+                pygame.mixer. music.stop()
+                intro_start_time = pygame.time. get_ticks()
             else:
-                # Skip intro on click during spaceship animation
+                # Skip intro on any input during spaceship animation
                 intro_active = False
 
 while not time_machine_used:
@@ -759,7 +759,7 @@ while not time_machine_used:
         if not tutorialManager.is_active:
             inventory.renderHeldItem(player)
         
-        renderer.createAndRenderText("OBJECTIVE", "Objective: Get time machine to progress", "Arial", 12, text_color, (10, 0), cache=False, silence=True)
+        renderer.createAndRenderText("OBJECTIVE", "Objective: Get time machine to progress", "Arial", 16, text_color, (10, 0), cache=False, silence=True)
     
     # Update health/hunger ALWAYS (not just when not paused) so pause tracking works (not in tutorial)
     if not grace_period_active and not tutorialManager.is_active and not death_screen_active:
@@ -912,16 +912,15 @@ while not time_machine_used:
     
     # Render item description and adjust keybind guide position if needed
     description_y = 20
-    guide_y = 50
+    guide_y = 35
     if item_description and not tutorialManager.is_active:
         text_color = util.getContrastColor(current_world.themeColor)
-        renderer.createAndRenderText("item_description", item_description, "Arial", 14, text_color, (w // 2 - len(item_description) * 3, description_y), cache=False, silence=True)
-        guide_y = 70  # Move keybind guide down if description is shown
-    
-    # Render keybind guide (independent of item description)
+        renderer.createAndRenderText("item_description", item_description, "Arial", 18, text_color, (w // 2 - len(item_description) * 4, description_y), cache=False, silence=True)
+        guide_y = 55  # Move keybind guide down if description is shown
+        
+        # Re-render keybind guide at new position if it exists
     if keybind_guide and not tutorialManager.is_active:
-        text_color = util.getContrastColor(current_world.themeColor)
-        renderer.createAndRenderText("keybind_guide", keybind_guide, "Arial", 16, text_color, (w // 2 - len(keybind_guide) * 4, guide_y), cache=False, silence=True)
+        renderer.createAndRenderText("keybind_guide", keybind_guide, "Arial", 18, text_color, (w // 2 - len(keybind_guide) * 4, guide_y), cache=False, silence=True)
     
     # Only update monster logic if not in grace period and not in tutorial
     if not grace_period_active and not tutorialManager.is_active and not death_screen_active:

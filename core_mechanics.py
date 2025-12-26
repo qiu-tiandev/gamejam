@@ -108,8 +108,9 @@ class InventoryManager:
             if sel_amt > 0:
                 name = util.getItemName(sel_id)
                 text_color = util.getContrastColor(self.world.themeColor) if self.world else (0, 0, 0)
+                w, h = util.getScreenDimensions()
                 self.renderer.createAndRenderText(
-                    "inv_selected_name", name, "arial", 20, text_color, (10, 10), cache=False, silence=True
+                    "inv_selected_name", name, "arial", 26, text_color, (w // 2 - len(name) * 6.7, 70), cache=False, silence=True
                 )
     def dropCurrent(self, itemManager, player, amount: int = 1):
         items_list = list(self.items.items())
@@ -161,7 +162,7 @@ class InventoryManager:
             energy_text = f"Energy: {player.lasergun_energy}%"
             self.renderer.createAndRenderText(
                 "lasergun_energy", energy_text, "arial", 18, (0, 255, 0) if player.lasergun_energy > 30 else (255, 0, 0),
-                (w // 2 - 50, 30), cache=False, silence=True
+                (w // 2 - 60, 35), cache=False, silence=True
             )
         
  
