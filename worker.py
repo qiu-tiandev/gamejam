@@ -967,19 +967,19 @@ while not time_machine_used:
                         # Clear inventory but retain essentials
                         laser_gun_id = util.getItemID("laser gun")
                         cooked_flesh_id = util.getItemID("cooked monster flesh")
+                        # Clear inventory but retain specific items
+                        laser_gun_id = util.getItemID("laser gun")
+                        cooked_flesh_id = util.getItemID("cooked monster flesh")
                         battery_id = util.getItemID("battery")
-                        liquid_fuel_id = util.getItemID("liquid fuel")
                         
-                        # Keep essentials
+                        # Keep only the specified items
                         kept_items = {}
-                        if laser_gun_id >= 0:
-                            kept_items[laser_gun_id] = 1
+                        if laser_gun_id >= 0 and inventory.items.get(laser_gun_id, 0) > 0:
+                            kept_items[laser_gun_id] = 1  # Keep 1 laser gun
                         if cooked_flesh_id >= 0:
-                            kept_items[cooked_flesh_id] = 4
+                            kept_items[cooked_flesh_id] = 5  # Give 5 cooked monster flesh
                         if battery_id >= 0:
-                            kept_items[battery_id] = 3
-                        if liquid_fuel_id >= 0:
-                            kept_items[liquid_fuel_id] = 3
+                            kept_items[battery_id] = 3  # Give 3 batteries
                         
                         # Clear and restore inventory
                         inventory.items.clear()
@@ -1077,37 +1077,37 @@ while not time_machine_used:
                             # Load new world textures
                             load_world_textures(renderer, current_world_index)
                             
-                            # Clear inventory except essentials
-                            laser_gun_id = util.getItemID("laser gun")
-                            cooked_flesh_id = util.getItemID("cooked monster flesh")
-                            battery_id = util.getItemID("battery")
-                            liquid_fuel_id = util.getItemID("liquid fuel")
-                            kept_items = {}
-                            for item_id, count in inventory.items.items():
-                                if item_id == laser_gun_id or item_id == cooked_flesh_id or item_id == battery_id or item_id == liquid_fuel_id:
-                                    kept_items[item_id] = count
-                            inventory.items.clear()
-                            inventory.items.update(kept_items)
+# Clear player inventory except all food items and laser gun
+                        food_items = [
+                            util.getItemID("cooked monster flesh"),
+                            util.getItemID("cooked mysterious meat"),
+                            util.getItemID("mysterious meat"),  # Raw food
+                            util.getItemID("monster flesh")     # Raw food
+                        ]
+                        laser_gun_id = util.getItemID("laser gun")
+                        kept_items = {}
+                        for item_id, count in inventory.items.items():
+                            if item_id in food_items or item_id == laser_gun_id:
+                                kept_items[item_id] = count
+                        inventory.items.clear()
+                        inventory.items.update(kept_items)
+                        
+                        # Give starting items for new world
+                        inventory.addItem(util.getItemID("laser gun"), 1)
+                        
+                        # Give bonus items
+                        inventory.addItem(util.getItemID("cooked monster flesh"), 3)
+                        inventory.addItem(util.getItemID("liquid fuel"), 4)
                             
-                            # Give essentials
-                            if laser_gun_id >= 0 and kept_items.get(laser_gun_id, 0) == 0:
-                                inventory.addItem(laser_gun_id, 1)
-                            if cooked_flesh_id >= 0 and kept_items.get(cooked_flesh_id, 0) == 0:
-                                inventory.addItem(cooked_flesh_id, 4)
-                            if battery_id >= 0 and kept_items.get(battery_id, 0) == 0:
-                                inventory.addItem(battery_id, 3)
-                            if liquid_fuel_id >= 0 and kept_items.get(liquid_fuel_id, 0) == 0:
-                                inventory.addItem(liquid_fuel_id, 3)
+                        # Create new world entities
+                        ground, sky, current_world = create_world_entities(current_world_index)
                             
-                            # Create new world entities
-                            ground, sky, current_world = create_world_entities(current_world_index)
-                            
-                            # Reset player for new world
-                            player.world = current_world
-                            player.ground = ground
-                            player.x = 0
-                            player.y = h - ground.height - 50
-                            player.health = 100
+                        # Reset player for new world
+                        player.world = current_world
+                        player.ground = ground
+                        player.x = 0
+                        player.y = h - ground.height - 50
+                        player.health = 100
                         player.hunger_timer = player.max_hunger_time
                         player.active_lasers.clear()
                         player.lasergun_energy = 100
