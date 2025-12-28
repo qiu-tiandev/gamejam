@@ -581,7 +581,6 @@ for n,i in world_item_configs:
     sprite = SpriteAnimation(n.split(".")[0], (32, 32), i)
     sprite.save_frames("items", start=item_offset)
     item_offset += i
-print(renderer.Imagetextures.keys())
 console.sendInfo("Initialization complete.", __file__)
 proc = psutil.Process(os.getpid())
 
@@ -635,7 +634,7 @@ WORLD_UNLOCKS = {
     0: [],  # Void - no unlocks (starting world)
     1: [27, 28, 29, 30, 31, 32, 33],  # Limbo unlocks Void items
     2: [34, 35, 36, 37],  # Interstella unlocks Limbo items
-    3: [38, 39, 49, 41],  # Planet-Z unlocks Interstella items
+    3: [38, 39, 40, 41],  # Planet-Z unlocks Interstella items
     4: [42, 43, 44],  # #AWRZ-P unlocks Planet-Z items
     5: [45, 46, 47, 48],  # Blackhole unlocks #AWRZ-P items
     6: [49, 50, 51],  # Whitehole unlocks Blackhole items
@@ -660,8 +659,8 @@ while intro_active:
             if start_screen_active:
                 # Transition from start screen to spaceship animation
                 start_screen_active = False
-                pygame.mixer. music.stop()
-                intro_start_time = pygame.time. get_ticks()
+                pygame.mixer.music.stop()
+                intro_start_time = pygame.time.get_ticks()
             else:
                 # Skip intro on any input during spaceship animation
                 intro_active = False
@@ -831,11 +830,8 @@ while not time_machine_used:
             player.last_food_time = pygame.time.get_ticks() / 1000
             tutorialManager._was_active = False
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_s] and antenna_toggle_cooldown <= 0:
-        antenna_boost_active = not antenna_boost_active
-        antenna_toggle_cooldown = 0.5  # 0.5 second delay before next toggle
-    if keys[pygame.K_r]:
-        player.eat_food(inventory)
+    # Antenna toggle is now handled in the S key event handler when near antenna
+    # R key is handled in KEYDOWN events for keyboard/clock/holy book
     
     # Keybind guide system - determine which guide to show (priority order)
     keybind_guide = None
@@ -898,6 +894,10 @@ while not time_machine_used:
                         keybind_guide = f"Press R to refill ({fuel_str})"
                 elif item_name == "Clock":
                     keybind_guide = "Press R to extend hunger time"
+                elif item_name == "Keyboard":
+                    keybind_guide = "Press R for +15% damage boost"
+                elif item_name == "Holy Book":
+                    keybind_guide = "Press R to increase max health"
                 elif item_name == "Holy Book":
                     keybind_guide = "Press R to increase max health"
     
@@ -964,38 +964,22 @@ while not time_machine_used:
                         player.health = player.max_health
                         player.last_food_time = pygame.time.get_ticks() // 1000  # Reset hunger timer
                         
-                        # Clear inventory but retain specific items
+                        # Clear inventory but retain essentials
                         laser_gun_id = util.getItemID("laser gun")
                         cooked_flesh_id = util.getItemID("cooked monster flesh")
                         battery_id = util.getItemID("battery")
+                        liquid_fuel_id = util.getItemID("liquid fuel")
                         
-                        # Keep only the specified items
+                        # Keep essentials
                         kept_items = {}
-                        if laser_gun_id >= 0 and inventory.items.get(laser_gun_id, 0) > 0:
-                            kept_items[laser_gun_id] = 1  # Keep 1 laser gun
+                        if laser_gun_id >= 0:
+                            kept_items[laser_gun_id] = 1
                         if cooked_flesh_id >= 0:
-                            kept_items[cooked_flesh_id] = 5  # Give 5 cooked monster flesh
+                            kept_items[cooked_flesh_id] = 4
                         if battery_id >= 0:
-                            kept_items[battery_id] = 3  # Give 3 batteries
-                        
-                        # Clear and restore inventory
-                        inventory.items.clear()
-                        inventory.items.update(kept_items)
-                        
-                        
-                        # Clear inventory but retain specific items
-                        laser_gun_id = util.getItemID("laser gun")
-                        cooked_flesh_id = util.getItemID("cooked monster flesh")
-                        battery_id = util.getItemID("battery")
-                        
-                        # Keep only the specified items
-                        kept_items = {}
-                        if laser_gun_id >= 0 and inventory.items.get(laser_gun_id, 0) > 0:
-                            kept_items[laser_gun_id] = 1  # Keep 1 laser gun
-                        if cooked_flesh_id >= 0:
-                            kept_items[cooked_flesh_id] = 5  # Give 5 cooked monster flesh
-                        if battery_id >= 0:
-                            kept_items[battery_id] = 3  # Give 3 batteries
+                            kept_items[battery_id] = 3
+                        if liquid_fuel_id >= 0:
+                            kept_items[liquid_fuel_id] = 3
                         
                         # Clear and restore inventory
                         inventory.items.clear()
@@ -1005,8 +989,9 @@ while not time_machine_used:
                         chestManager.chests = {}  # Reset chests
                         death_screen_active = False
                         death_screen_fade_alpha = 0
+                        death_respawn_button_rect = None
                     elif not tutorialManager.is_active and not death_screen_active:
-                        num_shots = 2 if antenna_boost_active and blockManager.get_nearby_antenna(player.x, player.y) else 1
+                        num_shots = 2 if antenna_boost_active else 1
                         player.shootLaser(pygame.mouse.get_pos(), inventory, num_shots)
         if event.type == pygame.KEYDOWN: #sum keys for input (exclude a and d for player movement)
             # Disable all key inputs during tutorial
@@ -1035,10 +1020,7 @@ while not time_machine_used:
                     # Toggle pause when no GUIs are open
                     is_paused = not is_paused
             elif event.key == pygame.K_r:
-                # Give player a permanent 15% damage boost when using keyboard
-                player.damage_boost += 15
-                
-                # Check if holding a clock or holy book first (highest priority)
+                # Check if holding a clock, holy book, or keyboard first (highest priority)
                 items_list = list(inventory.items.items())
                 if items_list and inventory.currentSlot - 1 < len(items_list):
                     selected_item_id, amount = items_list[inventory.currentSlot - 1]
@@ -1047,6 +1029,13 @@ while not time_machine_used:
                         player.use_clock(inventory)
                     elif item_name == "Holy Book" and amount > 0:
                         player.use_holy_book(inventory)
+                    elif item_name == "Keyboard" and amount > 0:
+                        # Give player stackable 15% damage boost when using keyboard
+                        player.damage_boost += 15
+                        inventory.removeItem(selected_item_id, 1)
+                    elif item_name in current_world.eatables and amount > 0:
+                        # Food eating
+                        player.eat_food(inventory)
                     else:
                         # Check if near a broken time machine with screwdriver
                         nearby_time_machine = blockManager.get_nearby_time_machine()
@@ -1062,58 +1051,63 @@ while not time_machine_used:
                     else:
                         player.refillLaserEnergy(inventory)
             elif event.key == pygame.K_s:
-                # Check if near a fixed time machine (highest priority - time travel!)
-                nearby_time_machine = blockManager.get_nearby_time_machine()
-                if nearby_time_machine and nearby_time_machine.get("state") == "fixed":
-                    # Check if this is the last world (Whitehole)
-                    if current_world_index >= get_world_count() - 1:
-                        # Player completed all worlds - break out of the game loop
-                        time_machine_used = True
-                    else:
-                        # Time travel to next world!
-                        # Fade out
-                        do_fade_transition(fade_out=True, duration_ms=500)
-                        
-                        # Unload previous world textures to free memory
-                        unload_world_textures(renderer, current_world_index)
-                        
-                        # Advance to next world
-                        current_world_index += 1
-                        
-                        # Load new world textures
-                        load_world_textures(renderer, current_world_index)
-                        
-                        # Clear player inventory except all food items and laser gun
-                        food_items = [
-                            util.getItemID("cooked monster flesh"),
-                            util.getItemID("cooked mysterious meat"),
-                            util.getItemID("mysterious meat"),  # Raw food
-                            util.getItemID("monster flesh")     # Raw food
-                        ]
-                        laser_gun_id = util.getItemID("laser gun")
-                        kept_items = {}
-                        for item_id, count in inventory.items.items():
-                            if item_id in food_items or item_id == laser_gun_id:
-                                kept_items[item_id] = count
-                        inventory.items.clear()
-                        inventory.items.update(kept_items)
-                        
-                        # Give starting items for new world
-                        inventory.addItem(util.getItemID("laser gun"), 1)
-                        
-                        # Give bonus items
-                        inventory.addItem(util.getItemID("cooked monster flesh"), 3)
-                        inventory.addItem(util.getItemID("liquid fuel"), 4)
-                        
-                        # Create new world entities
-                        ground, sky, current_world = create_world_entities(current_world_index)
-                        
-                        # Reset player for new world
-                        player.world = current_world
-                        player.ground = ground
-                        player.x = 0
-                        player.y = h - ground.height - 50
-                        player.health = 100
+                # Check if near antenna first (toggle antenna boost)
+                if blockManager.get_nearby_antenna(player.x, player.y):
+                    antenna_boost_active = not antenna_boost_active
+                    status = "ON" if antenna_boost_active else "OFF"
+                # Check if near a fixed time machine (time travel!)
+                else:
+                    nearby_time_machine = blockManager.get_nearby_time_machine()
+                    if nearby_time_machine and nearby_time_machine.get("state") == "fixed":
+                        # Check if this is the last world (Whitehole)
+                        if current_world_index >= get_world_count() - 1:
+                            # Player completed all worlds - break out of the game loop
+                            time_machine_used = True
+                        else:
+                            # Time travel to next world!
+                            # Fade out
+                            do_fade_transition(fade_out=True, duration_ms=500)
+                            
+                            # Unload previous world textures to free memory
+                            unload_world_textures(renderer, current_world_index)
+                            
+                            # Advance to next world
+                            current_world_index += 1
+                            
+                            # Load new world textures
+                            load_world_textures(renderer, current_world_index)
+                            
+                            # Clear inventory except essentials
+                            laser_gun_id = util.getItemID("laser gun")
+                            cooked_flesh_id = util.getItemID("cooked monster flesh")
+                            battery_id = util.getItemID("battery")
+                            liquid_fuel_id = util.getItemID("liquid fuel")
+                            kept_items = {}
+                            for item_id, count in inventory.items.items():
+                                if item_id == laser_gun_id or item_id == cooked_flesh_id or item_id == battery_id or item_id == liquid_fuel_id:
+                                    kept_items[item_id] = count
+                            inventory.items.clear()
+                            inventory.items.update(kept_items)
+                            
+                            # Give essentials
+                            if laser_gun_id >= 0 and kept_items.get(laser_gun_id, 0) == 0:
+                                inventory.addItem(laser_gun_id, 1)
+                            if cooked_flesh_id >= 0 and kept_items.get(cooked_flesh_id, 0) == 0:
+                                inventory.addItem(cooked_flesh_id, 4)
+                            if battery_id >= 0 and kept_items.get(battery_id, 0) == 0:
+                                inventory.addItem(battery_id, 3)
+                            if liquid_fuel_id >= 0 and kept_items.get(liquid_fuel_id, 0) == 0:
+                                inventory.addItem(liquid_fuel_id, 3)
+                            
+                            # Create new world entities
+                            ground, sky, current_world = create_world_entities(current_world_index)
+                            
+                            # Reset player for new world
+                            player.world = current_world
+                            player.ground = ground
+                            player.x = 0
+                            player.y = h - ground.height - 50
+                            player.health = 100
                         player.hunger_timer = player.max_hunger_time
                         player.active_lasers.clear()
                         player.lasergun_energy = 100
@@ -1143,28 +1137,28 @@ while not time_machine_used:
                             unlock_screen_start_time = pygame.time.get_ticks()
                         
                         console.sendInfo(f"Time traveled to {current_world.world_name}!", __file__)
-                else:
-                    # Chest looting has priority over cooker GUI
-                    chest_looted = False
-                    for n, chest_x in list(chestManager.chests.items()):
-                        if player.x + 60 > chest_x and player.x < chest_x + 60 and player.y + 60 > chestManager.groundy and player.y < chestManager.groundy + 60:
-                            for name, loot_data in chestManager.loot.items():
-                                rarity = loot_data["rarity"]
-                                drop_chance = chestManager.drop_chances.get(rarity, 1.0)
-                                if random.random() < drop_chance:
-                                    item_id = util.getItemID(name)
-                                    mn = loot_data["min"]
-                                    mx = loot_data["max"]
-                                    amt = random.randint(mn, mx)
-                                    drop_x = chest_x + random.randint(-20, 20)
-                                    itemManager.addItemEntities(item_id, amt, (drop_x, chestManager.groundy))
-                            del chestManager.chests[n]
-                            chest_looted = True
-                            break
-                    if not chest_looted:
-                        nearby_cooker = cookerManager.get_nearby_cooker()
-                        if nearby_cooker:
-                            cookerManager.toggle()
+                    else:
+                        # Chest looting has priority over cooker GUI
+                        chest_looted = False
+                        for n, chest_x in list(chestManager.chests.items()):
+                            if player.x + 60 > chest_x and player.x < chest_x + 60 and player.y + 60 > chestManager.groundy and player.y < chestManager.groundy + 60:
+                                for name, loot_data in chestManager.loot.items():
+                                    rarity = loot_data["rarity"]
+                                    drop_chance = chestManager.drop_chances.get(rarity, 1.0)
+                                    if random.random() < drop_chance:
+                                        item_id = util.getItemID(name)
+                                        mn = loot_data["min"]
+                                        mx = loot_data["max"]
+                                        amt = random.randint(mn, mx)
+                                        drop_x = chest_x + random.randint(-20, 20)
+                                        itemManager.addItemEntities(item_id, amt, (drop_x, chestManager.groundy))
+                                del chestManager.chests[n]
+                                chest_looted = True
+                                break
+                        if not chest_looted:
+                            nearby_cooker = cookerManager.get_nearby_cooker()
+                            if nearby_cooker:
+                                cookerManager.toggle()
             elif event.key == pygame.K_w:
                 # Place block in the direction the player is facing
                 blockManager.place_block(player.x, inventory.lastDir)

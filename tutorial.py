@@ -39,9 +39,9 @@ class TutorialManager:
             "Press R while holding the Laser Gun to refill it using Battery or Liquid Fuel from your inventory.",
             "Press Q to drop items. Use number keys 1-9 and 0 to switch inventory slots.",
             "You can place blocks like Beacons and Brain blocks to help defend against zombies. (Unlocked later in the game)",
-            "There will be special items with specials uses. So keep an eye out on the crafting recipes!",
+            "There will be special items with special uses. So keep an eye out on the crafting recipes!",
             "The hunger bar at the top shows your health. Eat food (cooked monster flesh) by pressing R to refill it. High hunger gives damage boost!",
-            "Chests contain loot. Walk near them and press S to open. They contiain random items required for progress.",
+            "Chests contain loot. Walk near them and press S to open. They contain random items required for progress.",
             "Good luck! The tutorial is complete. Click to start the game. But since I am nice, I will give you some starter loot.. Your cooked food will be preserved after time travel."
         ]
         

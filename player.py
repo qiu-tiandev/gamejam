@@ -50,7 +50,8 @@ class Player():
         self.last_hunger_damage_time = 0
         self.eat_cooldown = 1  # 1 second cooldown between eating
         self.last_eat_time = 0  # Last time player ate (for cooldown)
-        self.damage_boost = 0  # Current damage boost percentage
+        self.hunger_damage_boost = 0  # Temporary damage boost from hunger
+        self.damage_boost = 0  # Stackable damage boost from keyboard uses
         self.total_pause_time = 0  # Total time spent paused
     def detectinput(self):
         keys = pygame.key.get_pressed()
@@ -253,10 +254,17 @@ class Player():
         if self.lasergun_energy < total_energy:
             return
         
-        for _ in range(num_shots):
+        # Spawn lasers with slight offset if multiple shots
+        for i in range(num_shots):
+            offset_x = 0
+            offset_y = 0
+            if num_shots > 1:
+                # Spread lasers horizontally - visible gap
+                offset_x = (i - (num_shots - 1) / 2) * 20
+            
             self.active_lasers.append({
-                'x': float(player_center_x),
-                'y': float(player_center_y),
+                'x': float(player_center_x + offset_x),
+                'y': float(player_center_y + offset_y),
                 'dx': dx,
                 'dy': dy
             })
@@ -369,18 +377,18 @@ class Player():
         time_since_food = adjusted_time - self.last_food_time
         
         # Update hunger timer (counts down from max_hunger_time)
-        self.hunger_timer = max(0, self.max_hunger_time - time_since_food)
+        self.hunger_timer = max(0, min(self.max_hunger_time, self.max_hunger_time - time_since_food))
         
         # Calculate hunger percentage (0-100%)
-        hunger_percent = (self.hunger_timer / self.max_hunger_time) * 100
+        hunger_percent = min(100, (self.hunger_timer / self.max_hunger_time) * 100)
         
         # Damage boost is proportionate to hunger level (0% at 0 hunger, 50% at 100% hunger)
         # Only apply boost above 75% hunger for display purposes, but scale proportionally
         if hunger_percent >= 75:
             # Scale from 0% at 75% hunger to 50% at 100% hunger
-            self.damage_boost = ((hunger_percent - 75) / 25) * 50
+            self.hunger_damage_boost = ((hunger_percent - 75) / 25) * 50
         else:
-            self.damage_boost = 0  # No boost below 75%
+            self.hunger_damage_boost = 0  # No boost below 75%
         
         # Apply starvation damage when timer reaches 0
         if self.hunger_timer <= 0:
@@ -459,8 +467,9 @@ class Player():
         self.renderer.createAndRenderText("player_hunger_text", hunger_text, "Arial", 14, text_color, (bar_x + 5, bar_y + 3), cache=False, silence=True)
         
         # Display damage boost below hunger bar if active (show with 1 decimal place)
-        if self.damage_boost > 0:
-            boost_text = f"Damage Boost: +{self.damage_boost:.1f}%"
+        total_damage_boost = self.hunger_damage_boost + self.damage_boost
+        if total_damage_boost > 0:
+            boost_text = f"Damage Boost: +{total_damage_boost:.1f}%"
             boost_y = bar_y + bar_height + 5
             # Use gold/yellow color for boost indicator
             boost_color = (255, 215, 0)

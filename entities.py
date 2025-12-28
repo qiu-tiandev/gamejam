@@ -645,7 +645,8 @@ class MonsterManager:
                     laser_bottom > monster_screen_y and laser_y < monster_bottom):
                     # Hit! Reduce health with player's damage boost applied
                     base_damage = random.randint(10, 25)
-                    damage = int(base_damage * (1 + self.player.damage_boost / 100))
+                    total_boost = self.player.hunger_damage_boost + self.player.damage_boost
+                    damage = int(base_damage * (1 + total_boost / 100))
                     monster["health"] = monster.get("health", 100) - damage
                     lasers_to_remove.append(laser_idx)
                     break  # Each laser can only hit one monster
@@ -788,11 +789,17 @@ class BeaconManager:
             lasers_to_remove = []
             
             for i, laser in enumerate(beacon_state["active_lasers"]):
+                # Update laser position in world coordinates
                 laser['x'] += laser['dx'] * dt * 500
                 laser['y'] += laser['dy'] * dt * 500
                 
-                # Remove if off screen or hit ground
-                if laser['y'] >= ground_y or laser['x'] < 0 or laser['x'] > screen_w or laser['y'] < 0:
+                # Remove if hit ground (using world coordinate groundy) or traveled too far
+                # Check if laser is below ground level or has traveled too far from player
+                if laser['y'] >= self.monster_manager.groundy or laser['y'] < -500:
+                    lasers_to_remove.append(i)
+                # Also remove if laser has traveled beyond reasonable range
+                dist_from_player = abs(laser['x'] - self.player.x)
+                if dist_from_player > 1500:  # Remove if more than 1500 pixels away
                     lasers_to_remove.append(i)
             
             for i in reversed(lasers_to_remove):
@@ -822,30 +829,21 @@ class BeaconManager:
                 # laser x/y are in world coordinates
                 laser_x = laser['x']
                 laser_y = laser['y']
-                laser_width = 100
-                laser_height = 100
+                laser_size = 10  # Small projectile size
                 
                 for monster in self.monster_manager.monsters:
                     monster_x = monster["x"]
                     monster_y = monster["y"]
                     monster_size = self.monster_manager.monster_size
                     
-                    # Check overlap collision (laser is 100x100, monster is monster_size x monster_size)
-                    laser_left = laser_x - laser_width // 2
-                    laser_right = laser_x + laser_width // 2
-                    laser_top = laser_y - laser_height // 2
-                    laser_bottom = laser_y + laser_height // 2
-                    
-                    monster_left = monster_x - monster_size // 2
-                    monster_right = monster_x + monster_size // 2
-                    monster_top = monster_y
-                    monster_bottom = monster_y + monster_size
-                    
-                    if (laser_right > monster_left and laser_left < monster_right and
-                        laser_bottom > monster_top and laser_top < monster_bottom):
+                    # Simple distance-based collision for small laser projectile
+                    # Check if laser is within monster bounds
+                    if (laser_x >= monster_x and laser_x <= monster_x + monster_size and
+                        laser_y >= monster_y and laser_y <= monster_y + monster_size):
                         # Hit! Reduce health
                         base_damage = random.randint(10, 25)
-                        damage = int(base_damage * (1 + self.player.damage_boost / 100))
+                        total_boost = self.player.hunger_damage_boost + self.player.damage_boost
+                        damage = int(base_damage * (1 + total_boost / 100))
                         monster["health"] = monster.get("health", 100) - damage
                         lasers_to_remove.append(laser_idx)
                         break  # Each laser can only hit one monster
