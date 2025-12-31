@@ -36,75 +36,73 @@ There is no slowing down. Craft, smelt, cook, eat, evade and SURVIVE. Traverse t
   <thead>
     <tr>
       <th align="center">Item</th>
-      <th align="center">Min</th>
-      <th align="center">Max</th>
       <th align="center">Rarity</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td colspan="4" align="center"><em>General</em></td>
+      <td colspan="2" align="center"><em>General</em></td>
     </tr>
-    <tr><td>Alloy</td><td align="center">0</td><td align="center">2</td><td align="center">Rare</td></tr>
-    <tr><td>Battery</td><td align="center">1</td><td align="center">2</td><td align="center">Uncommon</td></tr>
-    <tr><td>Bones</td><td align="center">1</td><td align="center">2</td><td align="center">Uncommon</td></tr>
-    <tr><td>Charcoal</td><td align="center">1</td><td align="center">2</td><td align="center">Uncommon</td></tr>
-    <tr><td>Monster Flesh</td><td align="center">1</td><td align="center">3</td><td align="center">Uncommon</td></tr>
-    <tr><td>Mysterious Meat</td><td align="center">1</td><td align="center">2</td><td align="center">Rare</td></tr>
-    <tr><td>Mysterious Powder</td><td align="center">1</td><td align="center">5</td><td align="center">Uncommon</td></tr>
-    <tr><td>Cooker</td><td align="center">1</td><td align="center">1</td><td align="center">Rare</td></tr>
-    <tr><td>Dirt</td><td align="center">0</td><td align="center">2</td><td align="center">Common</td></tr>
-    <tr><td>Feather</td><td align="center">0</td><td align="center">2</td><td align="center">Common</td></tr>
-    <tr><td>Liquid Fuel</td><td align="center">1</td><td align="center">6</td><td align="center">Uncommon</td></tr>
-    <tr><td>Metal Scrap</td><td align="center">1</td><td align="center">3</td><td align="center">Common</td></tr>
-    <tr><td>Plastic Scrap</td><td align="center">1</td><td align="center">2</td><td align="center">Common</td></tr>
-    <tr><td>Stone</td><td align="center">0</td><td align="center">3</td><td align="center">Common</td></tr>
-    <tr><td>String</td><td align="center">0</td><td align="center">2</td><td align="center">Common</td></tr>
-    <tr><td>Wood Chips</td><td align="center">1</td><td align="center">4</td><td align="center">Common</td></tr>
+    <tr><td>Alloy</td><td align="center">Rare</td></tr>
+    <tr><td>Battery</td><td align="center">Uncommon</td></tr>
+    <tr><td>Bones</td><td align="center">Uncommon</td></tr>
+    <tr><td>Charcoal</td><td align="center">Uncommon</td></tr>
+    <tr><td>Monster Flesh</td><td align="center">Uncommon</td></tr>
+    <tr><td>Mysterious Meat</td><td align="center">Rare</td></tr>
+    <tr><td>Mysterious Powder</td><td align="center">Uncommon</td></tr>
+    <tr><td>Cooker</td><td align="center">Rare</td></tr>
+    <tr><td>Dirt</td><td align="center">Common</td></tr>
+    <tr><td>Feather</td><td align="center">Common</td></tr>
+    <tr><td>Liquid Fuel</td><td align="center">Uncommon</td></tr>
+    <tr><td>Metal Scrap</td><td align="center">Common</td></tr>
+    <tr><td>Plastic Scrap</td><td align="center">Common</td></tr>
+    <tr><td>Stone</td><td align="center">Common</td></tr>
+    <tr><td>String</td><td align="center">Common</td></tr>
+    <tr><td>Wood Chips</td><td align="center">Common</td></tr>
     <tr>
-      <td colspan="4" align="center"><em>Void</em></td>
+      <td colspan="2" align="center"><em>Void</em></td>
     </tr>
-    <tr><td>Beacon</td><td align="center">1</td><td align="center">1</td><td align="center">Rare</td></tr>
-    <tr><td>Purple Dust</td><td align="center">1</td><td align="center">2</td><td align="center">Common</td></tr>
-    <tr><td>Purple Fragment</td><td align="center">1</td><td align="center">2</td><td align="center">Rare</td></tr>
-    <tr><td>Ruby</td><td align="center">1</td><td align="center">2</td><td align="center">Uncommon</td></tr>
+    <tr><td>Beacon</td><td align="center">Rare</td></tr>
+    <tr><td>Purple Dust</td><td align="center">Common</td></tr>
+    <tr><td>Purple Fragment</td><td align="center">Rare</td></tr>
+    <tr><td>Ruby</td><td align="center">Uncommon</td></tr>
     <tr>
-      <td colspan="4" align="center"><em>Limbo</em></td>
+      <td colspan="2" align="center"><em>Limbo</em></td>
     </tr>
-    <tr><td>Ash</td><td align="center">1</td><td align="center">3</td><td align="center">Common</td></tr>
-    <tr><td>Calcium</td><td align="center">1</td><td align="center">2</td><td align="center">Uncommon</td></tr>
-    <tr><td>Half-eaten Brain</td><td align="center">1</td><td align="center">1</td><td align="center">Rare</td></tr>
-    <tr><td>Holy Book</td><td align="center">1</td><td align="center">1</td><td align="center">Rare</td></tr>
-    <tr><td>Pale Heart</td><td align="center">1</td><td align="center">1</td><td align="center">Uncommon</td></tr>
-    <tr><td>Soul Fragment</td><td align="center">1</td><td align="center">2</td><td align="center">Rare</td></tr>
+    <tr><td>Ash</td><td align="center">Common</td></tr>
+    <tr><td>Calcium</td><td align="center">Uncommon</td></tr>
+    <tr><td>Half-eaten Brain</td><td align="center">Rare</td></tr>
+    <tr><td>Holy Book</td><td align="center">Rare</td></tr>
+    <tr><td>Pale Heart</td><td align="center">Uncommon</td></tr>
+    <tr><td>Soul Fragment</td><td align="center">Rare</td></tr>
     <tr>
-      <td colspan="4" align="center"><em>Interstellar</em></td>
+      <td colspan="2" align="center"><em>Interstellar</em></td>
     </tr>
-    <tr><td>Chalk</td><td align="center">0</td><td align="center">1</td><td align="center">Uncommon</td></tr>
-    <tr><td>Clock</td><td align="center">1</td><td align="center">1</td><td align="center">Rare</td></tr>
-    <tr><td>Space Fragment</td><td align="center">1</td><td align="center">2</td><td align="center">Rare</td></tr>
+    <tr><td>Chalk</td><td align="center">Uncommon</td></tr>
+    <tr><td>Clock</td><td align="center">Rare</td></tr>
+    <tr><td>Space Fragment</td><td align="center">Rare</td></tr>
     <tr>
-      <td colspan="4" align="center"><em>Planet-Z</em></td>
+      <td colspan="2" align="center"><em>Planet-Z</em></td>
     </tr>
-    <tr><td>Antenna</td><td align="center">1</td><td align="center">1</td><td align="center">Rare</td></tr>
-    <tr><td>Bits</td><td align="center">1</td><td align="center">2</td><td align="center">Rare</td></tr>
-    <tr><td>Keyboard</td><td align="center">1</td><td align="center">1</td><td align="center">Rare</td></tr>
+    <tr><td>Antenna</td><td align="center">Rare</td></tr>
+    <tr><td>Bits</td><td align="center">Rare</td></tr>
+    <tr><td>Keyboard</td><td align="center">Rare</td></tr>
     <tr>
-      <td colspan="4" align="center"><em>#AWRZ-P</em></td>
+      <td colspan="2" align="center"><em>#AWRZ-P</em></td>
     </tr>
-    <tr><td>Corrupted Fragment</td><td align="center">1</td><td align="center">2</td><td align="center">Rare</td></tr>
-    <tr><td>Fluorite</td><td align="center">1</td><td align="center">1</td><td align="center">Uncommon</td></tr>
+    <tr><td>Corrupted Fragment</td><td align="center">Rare</td></tr>
+    <tr><td>Fluorite</td><td align="center">Uncommon</td></tr>
     <tr>
-      <td colspan="4" align="center"><em>Blackhole</em></td>
+      <td colspan="2" align="center"><em>Blackhole</em></td>
     </tr>
-    <tr><td>Blackhole Fragment</td><td align="center">1</td><td align="center">1</td><td align="center">Rare</td></tr>
-    <tr><td>Mass</td><td align="center">1</td><td align="center">3</td><td align="center">Uncommon</td></tr>
-    <tr><td>Sapphire</td><td align="center">1</td><td align="center">1</td><td align="center">Uncommon</td></tr>
+    <tr><td>Blackhole Fragment</td><td align="center">Rare</td></tr>
+    <tr><td>Mass</td><td align="center">Uncommon</td></tr>
+    <tr><td>Sapphire</td><td align="center">Uncommon</td></tr>
     <tr>
-      <td colspan="4" align="center"><em>Whitehole</em></td>
+      <td colspan="2" align="center"><em>Whitehole</em></td>
     </tr>
-    <tr><td>Quartz</td><td align="center">1</td><td align="center">1</td><td align="center">Uncommon</td></tr>
-    <tr><td>Whitehole Fragment</td><td align="center">1</td><td align="center">1</td><td align="center">Rare</td></tr>
+    <tr><td>Quartz</td><td align="center">Uncommon</td></tr>
+    <tr><td>Whitehole Fragment</td><td align="center">Rare</td></tr>
   </tbody>
 </table>
 
@@ -324,12 +322,44 @@ There is no slowing down. Craft, smelt, cook, eat, evade and SURVIVE. Traverse t
   </tbody>
 </table>
 
-
-
 ## Progression
 
-
+- Gather resources by looting Chests
+- Equip yourself with a Cooker, a steady Food supply is critical for survival
+- Ensure that you have enough Fuel for your Gun to maintain the offence
+- Craft a Time Machine to traverse to the next world 
+- Use Special Items unlocked to your advantage, protect yourself from the Zombies
 
 # Acknowledgements
+
+## Developers 
+
+- Code: [qiu-tiandev](https://github.com/qiu-tiandev)
+
+- Art: [HealerNotFound](https://github.com/HealerNotFound)
+
+## Resources
+
+### Music
+- Start Screen: [Desolate World](https://pixabay.com/music/electronic-desolate-world-121196/) by [DSTechnician](https://pixabay.com/users/dstechnician-26430546/) on [Pixabay](https://pixabay.com/)
+
+### Sound Effects
+
+- Spaceship Driving: [Aircraft-Landing-Zurich-International-Airport](https://pixabay.com/sound-effects/aircraft-landing-zurich-international-airport-28774/) by [Astounded (Freesound)](https://pixabay.com/users/freesound_community-46691455/) on [Pixabay](https://pixabay.com/)
+
+- Crash Landing onto Planet: [Explosion FX](https://pixabay.com/sound-effects/explosion-fx-343683/) by [SoundReality](https://pixabay.com/users/soundreality-31074404/) on [Pixabay](https://pixabay.com/)
+
+- Button Pressed: [Walkman Button](https://pixabay.com/sound-effects/walkman-button-272973/) by [soundsforstory](https://pixabay.com/users/soundsforstory-46312188/) on [Pixabay](https://pixabay.com/)
+
+- Laser Gun Beams: [Laser gun shot sound / future / sci-fi / lazer / wobble @chakong.audio](https://pixabay.com/sound-effects/laser-gun-shot-sound-future-sci-fi-lazer-wobble-chakongaudio-174883/) by [CHAKONG](https://pixabay.com/users/chakong-39837526/) on [Pixabay](https://pixabay.com/)
+
+- Zombie Groans: [Zombie Sounds](https://pixabay.com/sound-effects/zombie-sound-357975/) by [DRAGON-STUDIO](https://pixabay.com/users/dragon-studio-38165424/) on [Pixabay](https://pixabay.com/)
+
+- Time Travelling: SPACE SOUND EFFECTS 4 by NCPRIME on [Pixabay](https://pixabay.com/)
+
+### Graphic
+
+- Textures: Done on [Libresprite](https://libresprite.github.io/#!/)
+
 
 
