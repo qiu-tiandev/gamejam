@@ -12,7 +12,7 @@ There is no slowing down. Craft, smelt, cook, eat, evade and SURVIVE. Traverse t
 
 - `.exe`: Download and Run [KCIT-windows-release.exe](https://github.com/qiu-tiandev/gamejam/releases/download/v1.2/KCIT-windows-release.exe)
 
-- `Zip`: Download the [Main ZIP](https://github.com/qiu-tiandev/gamejam/archive/refs/heads/main.zip) and Run worker.py 
+- `Zip`: Download the [Main ZIP](https://github.com/qiu-tiandev/gamejam/archive/refs/heads/main.zip) and run `pip install -r requirements.txt` and `python worker.py`
 
 # Documentation
 ## Keybinds 
@@ -327,7 +327,7 @@ There is no slowing down. Craft, smelt, cook, eat, evade and SURVIVE. Traverse t
 - Gather resources by looting Chests
 - Equip yourself with a Cooker, a steady Food supply is critical for survival
 - Ensure that you have enough Fuel for your Gun to maintain the offence
-- Craft a Time Machine to traverse to the next world 
+- Craft a Time Machine to traverse to the next world (Check crafting recipes)
 - Use Special Items unlocked to your advantage, protect yourself from the Zombies
 
 # Acknowledgements
@@ -356,6 +356,8 @@ There is no slowing down. Craft, smelt, cook, eat, evade and SURVIVE. Traverse t
 - Zombie Groans: [Zombie Sounds](https://pixabay.com/sound-effects/zombie-sound-357975/) by [DRAGON-STUDIO](https://pixabay.com/users/dragon-studio-38165424/) on [Pixabay](https://pixabay.com/)
 
 - Time Travelling: SPACE SOUND EFFECTS 4 by NCPRIME on [Pixabay](https://pixabay.com/)
+
+- Game engine used: [Pygame](https://github.com/pygame/pygame)
 
 ### Graphic
 
