@@ -29,14 +29,12 @@ itemID = {
     "string": 19,
     "time machine": 20,
     "wood chips": 21,
-
     # --- Void (alphabetical) ---
     "Beacon": 22,
     "Magical Purple Screw": 23,
     "Purple Dust": 24,
     "Purple Fragment": 25,
     "Ruby": 26,
-
     # --- Limbo (alphabetical) ---
     "Ash": 27,
     "Calcium": 28,
@@ -45,30 +43,25 @@ itemID = {
     "Magical Eternal Screw": 31,
     "Pale Heart": 32,
     "Soul Fragment": 33,
-
     # --- Interstellar (alphabetical) ---
     "Chalk": 34,
     "Clock": 35,
     "Magical Stellar Screw": 36,
     "Space Fragment": 37,
-
     # --- Planet-Z (alphabetical) ---
     "Antenna": 38,
     "Bits": 39,
     "Keyboard": 40,
     "Magical Code Screw": 41,
-
     # --- #AWRZ-P (alphabetical) ---
     "Corrupted Fragment": 42,
     "Fluorite": 43,
     "Magical Arbitrary Screw": 44,
-
     # --- Blackhole (alphabetical) ---
     "Blackhole Fragment": 45,
     "Magical Dark-matter Screw": 46,
     "Mass": 47,
     "Sapphire": 48,
-
     # --- Whitehole (alphabetical) ---
     "Magical Anti-matter Screw": 49,
     "Quartz": 50,
@@ -116,6 +109,7 @@ def getItemName(id: int):
 def getItemDescription(name: str):
     return itemDescriptions.get(name, "")
 
+
 # Item descriptions
 itemDescriptions = {
     # --- General items ---
@@ -140,14 +134,12 @@ itemDescriptions = {
     "string": "Flexible cord, useful for crafting",
     "time machine": "Enables travel to other worlds",
     "wood chips": "Fragments of wood. Subfuel for cooking",
-
     # --- Void ---
     "Beacon": "Guides lost souls through darkness",
     "Magical Purple Screw": "Mystical component from the Void, essential for time travel",
     "Purple Dust": "Shimmering dust of the Void",
     "Purple Fragment": "Crystallized Void matter, useful for crafting",
     "Ruby": "A precious red gemstone",
-
     # --- Limbo ---
     "Ash": "Remains of forgotten things",
     "Calcium": "Mineral from ancient bones",
@@ -156,35 +148,31 @@ itemDescriptions = {
     "Magical Eternal Screw": "Eternal component from Limbo, essential for time travel",
     "Pale Heart": "Heart of a lost soul",
     "Soul Fragment": "Essence of a departed spirit",
-
     # --- Interstellar ---
     "Chalk": "Writing tool from the stars",
     "Clock": "Time is key. Extends your survival time by 10%",
     "Magical Stellar Screw": "Cosmic component, essential for time tra  vel",
     "Space Fragment": "Matter from outer space",
-
     # --- Planet-Z ---
     "Antenna": "Allows you to shoot double lasers",
     "Bits": "Digital information fragments, useful for crafting",
     "Keyboard": "Increases attack",
     "Magical Code Screw": "Algorithmic component, essential for time travel",
-
     # --- #AWRZ-P ---
     "Corrupted Fragment": "Twisted matterm, useful for crafting",
     "Fluorite": "Fluorescent mineral",
     "Magical Arbitrary Screw": "Chaotic component, essential for time travel",
-
     # --- Blackhole ---
     "Blackhole Fragment": "Matter compressed infinitely, useful for crafting",
     "Magical Dark-matter Screw": "Component of hidden matter, essential for time travel",
     "Mass": "Pure gravitational force, useful for crafting",
     "Sapphire": "A precious blue gemstone",
-
     # --- Whitehole ---
     "Magical Anti-matter Screw": "Component of creation, essential for time travel",
     "Quartz": "Clear crystalline mineral",
     "Whitehole Fragment": "Matter bursting with energy, useful for crafting",
 }
+
 
 def getContrastColor(themeColor):
     r, g, b = themeColor[:3]

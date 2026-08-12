@@ -2,13 +2,48 @@ import util
 import pygame
 
 WORLDS = [
-    {"name": "Void", "theme_color": (129, 99, 180), "ground_id": "ground_void", "sky_id": "sky_void"},
-    {"name": "Limbo", "theme_color": (184, 184, 184), "ground_id": "ground_limbo", "sky_id": "sky_limbo"},
-    {"name": "Interstella", "theme_color": (255, 196, 209), "ground_id": "ground_interstella", "sky_id": "sky_interstella"},
-    {"name": "Planet-Z", "theme_color": (115, 240, 198), "ground_id": "ground_planet_z", "sky_id": "sky_planet_z"},
-    {"name": "#AWRZ-P", "theme_color": (0, 212, 89), "ground_id": "ground_awrz_p", "sky_id": "sky_awrz_p"},
-    {"name": "Blackhole", "theme_color": (36, 2, 0), "ground_id": "ground_blackhole", "sky_id": "sky_blackhole"},
-    {"name": "Whitehole", "theme_color": (255, 255, 255), "ground_id": "ground_whitehole", "sky_id": "sky_whitehole"},
+    {
+        "name": "Void",
+        "theme_color": (129, 99, 180),
+        "ground_id": "ground_void",
+        "sky_id": "sky_void",
+    },
+    {
+        "name": "Limbo",
+        "theme_color": (184, 184, 184),
+        "ground_id": "ground_limbo",
+        "sky_id": "sky_limbo",
+    },
+    {
+        "name": "Interstella",
+        "theme_color": (255, 196, 209),
+        "ground_id": "ground_interstella",
+        "sky_id": "sky_interstella",
+    },
+    {
+        "name": "Planet-Z",
+        "theme_color": (115, 240, 198),
+        "ground_id": "ground_planet_z",
+        "sky_id": "sky_planet_z",
+    },
+    {
+        "name": "#AWRZ-P",
+        "theme_color": (0, 212, 89),
+        "ground_id": "ground_awrz_p",
+        "sky_id": "sky_awrz_p",
+    },
+    {
+        "name": "Blackhole",
+        "theme_color": (36, 2, 0),
+        "ground_id": "ground_blackhole",
+        "sky_id": "sky_blackhole",
+    },
+    {
+        "name": "Whitehole",
+        "theme_color": (255, 255, 255),
+        "ground_id": "ground_whitehole",
+        "sky_id": "sky_whitehole",
+    },
 ]
 
 
@@ -58,7 +93,9 @@ class World:
         self.world_data = get_world_data(world_index)
         self.world_name = self.world_data["name"]
 
-        self.themeColor = themeColor if themeColor is not None else self.world_data["theme_color"]
+        self.themeColor = (
+            themeColor if themeColor is not None else self.world_data["theme_color"]
+        )
 
         self.ground_id = self.world_data["ground_id"]
         self.sky_id = self.world_data["sky_id"]
@@ -79,7 +116,13 @@ class World:
         if craftingRecipes is not None:
             self.craftingRecipes.update(craftingRecipes)
 
-        self.placeableBlocks = ["time machine", "cooker", "half-eaten brain", "beacon", "antenna"]
+        self.placeableBlocks = [
+            "time machine",
+            "cooker",
+            "half-eaten brain",
+            "beacon",
+            "antenna",
+        ]
         if placeableBlocks is not None:
             self.placeableBlocks.extend(placeableBlocks)
 
@@ -110,7 +153,9 @@ class World:
         if cookingRecipes is not None:
             for i in cookingRecipes["recipes"]:
                 if i in self.cookingRecipes["recipes"]:
-                    self.cookingRecipes["recipes"][i].extend(cookingRecipes["recipes"][i])
+                    self.cookingRecipes["recipes"][i].extend(
+                        cookingRecipes["recipes"][i]
+                    )
                 else:
                     self.cookingRecipes["recipes"][i] = cookingRecipes["recipes"][i]
 

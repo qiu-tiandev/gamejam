@@ -22,12 +22,17 @@ class Renderer:
         self.background_path = None
 
         for p, i in Imagetextures.items():
-            if os.path.exists(f"{os.path.join(os.path.dirname(__file__), f'assets/{i}')}"):
+            if os.path.exists(
+                f"{os.path.join(os.path.dirname(__file__), f'assets/{i}')}"
+            ):
                 self.Imagetextures[p] = pygame.image.load(
                     f"{os.path.join(os.path.dirname(__file__), f'assets/{i}')}"
                 ).convert_alpha()
             else:
-                console.sendError(f"Texture file {os.path.dirname(__file__)}/assets/{i} not found.", __file__)
+                console.sendError(
+                    f"Texture file {os.path.dirname(__file__)}/assets/{i} not found.",
+                    __file__,
+                )
 
         for p, i in TextTextures.items():  # (text, font, font_size, color)
             texture = self.getFont(i[1], i[2]).render(i[0], True, i[3])
@@ -57,7 +62,9 @@ class Renderer:
             if texture:
                 self.screen.blit(texture, (x, y))
             else:
-                console.sendError(f"Texture ID {obj} not found in textures dictionary.", __file__)
+                console.sendError(
+                    f"Texture ID {obj} not found in textures dictionary.", __file__
+                )
 
     def render_surface(self, surface, position: tuple[int, int]):
         self.screen.blit(surface, position)
@@ -73,17 +80,25 @@ class Renderer:
         silence=False,
     ):
         if self.Imagetextures.get(id) or self.TextTextures.get(id) and not silence:
-            console.sendWarning(f"Texture ID {id} already exists and will be overwritten.", __file__)
+            console.sendWarning(
+                f"Texture ID {id} already exists and will be overwritten.", __file__
+            )
         font = self.getFont(font, font_size)
         texture = font.render(text, True, color)
         if cache:
             self.TextTextures[id] = texture
         return texture
 
-    def createImage(self, id: str, filepath: str, size: tuple[int, int] = None, cache: bool = True):
+    def createImage(
+        self, id: str, filepath: str, size: tuple[int, int] = None, cache: bool = True
+    ):
         if self.Imagetextures.get(id) or self.TextTextures.get(id):
-            console.sendWarning(f"Texture ID {id} already exists and will be overwritten.", __file__)
-        if os.path.exists(f"{os.path.join(os.path.dirname(__file__), f'assets/{filepath}')}"):
+            console.sendWarning(
+                f"Texture ID {id} already exists and will be overwritten.", __file__
+            )
+        if os.path.exists(
+            f"{os.path.join(os.path.dirname(__file__), f'assets/{filepath}')}"
+        ):
             texture = pygame.image.load(
                 f"{os.path.join(os.path.dirname(__file__), f'assets/{filepath}')}"
             ).convert_alpha()
@@ -98,7 +113,9 @@ class Renderer:
     def loadTexture(self, filepath: str, id: str):
         if self.Imagetextures.get(id) or self.TextTextures.get(id):
             return  # Already loaded
-        if os.path.exists(f"{os.path.join(os.path.dirname(__file__), f'assets/{filepath}')}"):
+        if os.path.exists(
+            f"{os.path.join(os.path.dirname(__file__), f'assets/{filepath}')}"
+        ):
             texture = pygame.image.load(
                 f"{os.path.join(os.path.dirname(__file__), f'assets/{filepath}')}"
             ).convert_alpha()
@@ -141,7 +158,8 @@ class Renderer:
     ):
         if numPoints <= 2:
             console.sendWarning(
-                f"Creating solid texture with {numPoints} points may not render correctly.", __file__
+                f"Creating solid texture with {numPoints} points may not render correctly.",
+                __file__,
             )
         texture = pygame.Surface(size, pygame.SRCALPHA)
         w, h = size
@@ -151,7 +169,9 @@ class Renderer:
         points = []
         if numPoints == 3:
             angles = [-math.pi / 2, math.pi / 6, 5 * math.pi / 6]
-            points = [(int(cx + math.cos(a) * rx), int(cy + math.sin(a) * ry)) for a in angles]
+            points = [
+                (int(cx + math.cos(a) * rx), int(cy + math.sin(a) * ry)) for a in angles
+            ]
         elif numPoints == 4:
             points = [(0, 0), (w, 0), (w, h), (0, h)]
         else:
@@ -180,13 +200,16 @@ class Renderer:
     def setBackground(self, color=None, image_path=None):
         if not color and not image_path:
             console.sendWarning(
-                "No background color or image path provided. Background will not be loaded.", __file__
+                "No background color or image path provided. Background will not be loaded.",
+                __file__,
             )
             return
         if not self.background or (self.background_path not in [image_path, color]):
             if image_path:
                 if not os.path.exists(image_path):
-                    return console.sendError(f"Background image file {image_path} not found.", __file__)
+                    return console.sendError(
+                        f"Background image file {image_path} not found.", __file__
+                    )
                 self.background = pygame.transform.scale(
                     pygame.image.load(image_path).convert_alpha(),
                     self.screen.get_size(),
@@ -212,7 +235,12 @@ class Renderer:
                 self.Imagetextures[id] = resized
             return resized
         if crop:
-            crop_rect = pygame.Rect((originalw - size[0]) // 2, 0, size[0], originalh - (originalh - size[1]))
+            crop_rect = pygame.Rect(
+                (originalw - size[0]) // 2,
+                0,
+                size[0],
+                originalh - (originalh - size[1]),
+            )
             cropped_surface = original.subsurface(crop_rect)
             if save:
                 self.Imagetextures[id] = cropped_surface

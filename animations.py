@@ -9,14 +9,18 @@ class SpriteAnimation:
         self.spritesheet = self.renderer.getTexture(spriteid)
         self.spriteid = spriteid
         if not self.spritesheet:
-            console.sendError(f"Sprite ID {self.spriteid} not found for animation.", __file__)
+            console.sendError(
+                f"Sprite ID {self.spriteid} not found for animation.", __file__
+            )
             return
         self.numSpriteW = self.spritesheet.get_width() // spriteSize[0]
         self.numSpriteH = self.spritesheet.get_height() // spriteSize[1]
         self.InternalCache = []
         for y in range(self.numSpriteH):
             for x in range(self.numSpriteW):
-                rect = pygame.Rect(x * spriteSize[0], y * spriteSize[1], spriteSize[0], spriteSize[1])
+                rect = pygame.Rect(
+                    x * spriteSize[0], y * spriteSize[1], spriteSize[0], spriteSize[1]
+                )
                 self.InternalCache.append(self.spritesheet.subsurface(rect))
         for _ in range(self.numSpriteH * self.numSpriteW - numSprites):
             self.InternalCache.pop()
@@ -62,7 +66,9 @@ class TypingAnimation:
         self.current_index = 0
         self.startTime = None
         self.currentText = ""
-        self.renderer.createText("TEMPTYPINGANIMATION", "", self.font, self.font_size, self.color, True)
+        self.renderer.createText(
+            "TEMPTYPINGANIMATION", "", self.font, self.font_size, self.color, True
+        )
 
     def doTypingAnimation(self):
         if self.startTime is None:
