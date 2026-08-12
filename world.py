@@ -11,63 +11,78 @@ WORLDS = [
     {"name": "Whitehole", "theme_color": (255, 255, 255), "ground_id": "ground_whitehole", "sky_id": "sky_whitehole"},
 ]
 
+
 def get_world_names():
     return [w["name"] for w in WORLDS]
+
 
 def get_world_count():
     return len(WORLDS)
 
+
 def get_world_data(index):
     return WORLDS[index % len(WORLDS)]
 
+
 def load_world_textures(renderer, world_index):
     world = get_world_data(world_index)
-    
+
     renderer.createImage(world["ground_id"], f"ground_{world_index + 1}.png")
     renderer.createImage(world["sky_id"], f"Sky{world_index + 1}.png")
+
 
 def unload_world_textures(renderer, world_index):
     if world_index < 0:
         return
     world = get_world_data(world_index)
-    
+
     if world["ground_id"] in renderer.Imagetextures:
         del renderer.Imagetextures[world["ground_id"]]
     if world["sky_id"] in renderer.Imagetextures:
         del renderer.Imagetextures[world["sky_id"]]
 
+
 class World:
-    def __init__(self, gravity, world_index: int = 0, chestLoot: dict = None, themeColor:tuple[int,int,int]=None, craftingRecipes: dict = None, placeableBlocks:list = None, cookingRecipes: dict = None):
+    def __init__(
+        self,
+        gravity,
+        world_index: int = 0,
+        chestLoot: dict = None,
+        themeColor: tuple[int, int, int] = None,
+        craftingRecipes: dict = None,
+        placeableBlocks: list = None,
+        cookingRecipes: dict = None,
+    ):
         self.gravity = gravity
         self.world_index = world_index
         self.world_data = get_world_data(world_index)
         self.world_name = self.world_data["name"]
-        
+
         self.themeColor = themeColor if themeColor is not None else self.world_data["theme_color"]
-        
+
         self.ground_id = self.world_data["ground_id"]
         self.sky_id = self.world_data["sky_id"]
         world_key = self.world_name.lower().replace("-", "_").replace("#", "")
         self.items_id = f"items_{world_key}"
-        
+
         if chestLoot is None:
             self.chestLoot = {}
         else:
             self.chestLoot = chestLoot
         self.craftingRecipes = {
-                "battery": [("metal scrap", 2), ("liquid fuel", 1)],
-                "cooker": [("stone", 5), ("string", 2),("wood chips", 3)],
-                "screwdriver": [("metal scrap", 3), ("plastic scrap", 2)],
-                "liquid fuel": [("charcoal", 2), ("metal scrap", 2)],
-                "feather": [("string", 3)]
-            }
+            "battery": [("metal scrap", 2), ("liquid fuel", 1)],
+            "cooker": [("stone", 5), ("string", 2), ("wood chips", 3)],
+            "screwdriver": [("metal scrap", 3), ("plastic scrap", 2)],
+            "liquid fuel": [("charcoal", 2), ("metal scrap", 2)],
+            "feather": [("string", 3)],
+        }
         if craftingRecipes is not None:
             self.craftingRecipes.update(craftingRecipes)
-        
+
         self.placeableBlocks = ["time machine", "cooker", "half-eaten brain", "beacon", "antenna"]
         if placeableBlocks is not None:
             self.placeableBlocks.extend(placeableBlocks)
-        
+
         self.blockAssets = {
             "time machine": "time_machine.png",
             "cooker": "cooker_spritesheet",
@@ -75,7 +90,7 @@ class World:
             "beacon": "Beacon.png",
             "antenna": "Antenna.png",
         }
-        
+
         self.blockProperties = {
             "time machine": {"height": 2, "states": ["default"], "solid": False},
             "cooker": {"height": 1, "states": ["idle", "cooking"], "solid": True},
@@ -83,14 +98,14 @@ class World:
             "beacon": {"height": 1, "states": ["active"], "solid": True},
             "antenna": {"height": 1, "states": ["active"], "solid": True},
         }
-        
+
         self.cookingRecipes = {
-            "fuels": ["charcoal","liquid fuel", "wood chips"],
+            "fuels": ["charcoal", "liquid fuel", "wood chips"],
             "recipes": {
                 "charcoal": [(1, "wood chips", 1)],
                 "cooked monster flesh": [(1, "monster flesh", 1)],
-                "cooked mysterious meat": [(1, "mysterious meat", 1)]
-            }
+                "cooked mysterious meat": [(1, "mysterious meat", 1)],
+            },
         }
         if cookingRecipes is not None:
             for i in cookingRecipes["recipes"]:
@@ -98,18 +113,19 @@ class World:
                     self.cookingRecipes["recipes"][i].extend(cookingRecipes["recipes"][i])
                 else:
                     self.cookingRecipes["recipes"][i] = cookingRecipes["recipes"][i]
-        
+
         self.eatables = [
             "cooked monster flesh",
             "cooked mysterious meat",
         ]
-    
+
     def getChestLoot(self):
         return self.chestLoot
 
+
 class Sky:
-    def __init__(self, id:str, groundh):
-        self.id = id 
+    def __init__(self, id: str, groundh):
+        self.id = id
         self.renderer = util.getRenderer()
         self.groundh = groundh
         w, h = util.getScreenDimensions()
@@ -125,6 +141,7 @@ class Sky:
         self.scaled_w = scaled_w
         self.screen_w = w
         self._scaled_tex = scaled_texture
+
     def render(self, player_x):
         dims = util.getScreenDimensions()
         if dims != self._cached_dims:
