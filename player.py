@@ -1,8 +1,6 @@
 import pygame
-from renderer import Renderer
 from animations import SpriteAnimation
 import util
-import console
 import random
 
 

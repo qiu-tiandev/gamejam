@@ -152,7 +152,7 @@ itemDescriptions = {
     # --- Interstellar ---
     "Chalk": "Writing tool from the stars",
     "Clock": "Time is key. Extends your survival time by 10%",
-    "Magical Stellar Screw": "Cosmic component, essential for time tra  vel",
+    "Magical Stellar Screw": "Cosmic component, essential for time travel",
     "Space Fragment": "Matter from outer space",
     # --- Planet-Z ---
     "Antenna": "Allows you to shoot double lasers",
@@ -160,7 +160,7 @@ itemDescriptions = {
     "Keyboard": "Increases attack",
     "Magical Code Screw": "Algorithmic component, essential for time travel",
     # --- #AWRZ-P ---
-    "Corrupted Fragment": "Twisted matterm, useful for crafting",
+    "Corrupted Fragment": "Twisted matter, useful for crafting",
     "Fluorite": "Fluorescent mineral",
     "Magical Arbitrary Screw": "Chaotic component, essential for time travel",
     # --- Blackhole ---

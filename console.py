@@ -2,17 +2,21 @@ from datetime import datetime
 import os
 
 
-def sendWarning(message, src):
+def _send(level: str, message: str, src: str, color_code: str = ""):
+    color_prefix = f"\033[{color_code}m" if color_code else ""
+    color_suffix = "\033[0m" if color_code else ""
     print(
-        f"\033[33m[{datetime.now()}] [{os.path.abspath(src)}] WARNING: {message}\033[0m"
+        f"{color_prefix}[{datetime.now()}] [{os.path.abspath(src)}] {level}: {message}{color_suffix}"
     )
 
 
-def sendError(message, src):
-    print(
-        f"\033[31m[{datetime.now()}] [{os.path.abspath(src)}] ERROR: {message}\033[0m"
-    )
+def sendWarning(message: str, src: str):
+    _send("WARNING", message, src, "33")
 
 
-def sendInfo(message, src):
-    print(f"[{datetime.now()}] [{os.path.abspath(src)}] INFO: {message}")
+def sendError(message: str, src: str):
+    _send("ERROR", message, src, "31")
+
+
+def sendInfo(message: str, src: str):
+    _send("INFO", message, src)

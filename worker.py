@@ -12,7 +12,6 @@ from world import (
     unload_world_textures,
     get_world_data,
     get_world_count,
-    WORLDS,
 )
 from core_mechanics import (
     InventoryManager,
