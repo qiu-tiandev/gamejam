@@ -1,9 +1,11 @@
 import pygame
+
 renderer = None
 clock = pygame.time.Clock()
 dt = None
-w =0 
+w = 0
 h = 0
+
 itemID = {
     # --- General items (alphabetical) ---
     "alloy": 1,
@@ -72,29 +74,46 @@ itemID = {
     "Quartz": 50,
     "Whitehole Fragment": 51,
 }
-itemID_reversed = {v:k for k,v in itemID.items()}
+
+itemID_reversed = {v: k for k, v in itemID.items()}
+
 
 def setRenderer(Newrenderer):
     global renderer
     renderer = Newrenderer
+
+
 def getRenderer():
     return renderer
+
+
 def SetDeltaTime():
     global dt
-    dt = clock.tick(9999999)/1000
+    dt = clock.tick(9999999) / 1000
+
+
 def getDeltaTime():
     return dt
-def SetScreenDimensions(nw,nh):
-    global w,h
-    w,h = nw,nh
-def getScreenDimensions():
-    return w,h
-def getItemID(name:str):
-    return itemID.get(name,-1)
-def getItemName(id:int):
-    return itemID_reversed.get(id,"unknown item")
 
-def getItemDescription(name:str):
+
+def SetScreenDimensions(nw, nh):
+    global w, h
+    w, h = nw, nh
+
+
+def getScreenDimensions():
+    return w, h
+
+
+def getItemID(name: str):
+    return itemID.get(name, -1)
+
+
+def getItemName(id: int):
+    return itemID_reversed.get(id, "unknown item")
+
+
+def getItemDescription(name: str):
     return itemDescriptions.get(name, "")
 
 # Item descriptions
