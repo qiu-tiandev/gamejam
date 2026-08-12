@@ -186,10 +186,7 @@ def render_intro_sequence():
 
     if progress >= 0.95 and not intro_explosion_played:
         intro_explosion_played = True
-        try:
-            explosion_sound = pygame.mixer.Sound("assets/explosion.mp3")
-            explosion_sound.play()
-        except:
+        if not util.play_sound("assets/explosion.mp3"):
             console.sendInfo("Could not load explosion.mp3", __file__)
 
     if progress >= 1.0 and not intro_zoom_triggered:
@@ -833,7 +830,7 @@ intro_start_time = 0
 try:
     pygame.mixer.music.load("assets/start.mp3")
     pygame.mixer.music.play(-1)  # Loop indefinitely
-except:
+except (pygame.error, FileNotFoundError):
     console.sendInfo("Could not load start.mp3", __file__)
 intro_zoom_triggered = False
 intro_zoom_start_time = 0
@@ -1232,13 +1229,7 @@ while not time_machine_used:
                     and death_respawn_button_rect
                     and death_respawn_button_rect.collidepoint(mouse_pos)
                 ):
-                    # Play click sound
-                    try:
-                        click_sound = pygame.mixer.Sound("assets/click.mp3")
-                        click_sound.set_volume(0.5)
-                        click_sound.play()
-                    except:
-                        pass
+                    util.play_sound("assets/click.mp3", volume=0.5)
 
                     # Respawn player
                     player.health = player.max_health
@@ -1247,9 +1238,6 @@ while not time_machine_used:
                     )  # Reset hunger timer
 
                     # Clear inventory but retain essentials
-                    laser_gun_id = util.getItemID("laser gun")
-                    cooked_flesh_id = util.getItemID("cooked monster flesh")
-                    # Clear inventory but retain specific items
                     laser_gun_id = util.getItemID("laser gun")
                     cooked_flesh_id = util.getItemID("cooked monster flesh")
                     battery_id = util.getItemID("battery")

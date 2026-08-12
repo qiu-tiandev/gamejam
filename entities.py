@@ -363,13 +363,7 @@ class MonsterManager:
             self.currentId += 1
             self.cooldown = 180
 
-            # Play zombie spawn sound
-            try:
-                zombie_sound = pygame.mixer.Sound("assets/zombie.mp3")
-                zombie_sound.set_volume(0.5)  # 50% volume
-                zombie_sound.play()
-            except:
-                pass  # Silently fail if sound not found
+            util.play_sound("assets/zombie.mp3", volume=0.5)
 
     def updateMonsters(self, is_focused=True):
         dims = util.getScreenDimensions()
@@ -931,13 +925,7 @@ class BeaconManager:
                     )
                     beacon_state["laser_cooldown"] = self.laser_cooldown_time
 
-                    # Play laser sound effect
-                    try:
-                        laser_sound = pygame.mixer.Sound("assets/laser_gun.mp3")
-                        laser_sound.set_volume(0.5)  # 50% volume
-                        laser_sound.play()
-                    except:
-                        pass  # Silently fail if sound not found
+                    util.play_sound("assets/laser_gun.mp3", volume=0.5)
 
         # Update laser positions
         self._update_lasers(dt)

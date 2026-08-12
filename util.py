@@ -1,4 +1,5 @@
 import pygame
+from typing import Optional
 
 renderer = None
 clock = pygame.time.Clock()
@@ -179,3 +180,14 @@ def getContrastColor(themeColor):
     luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
     # Return white for dark backgrounds, black for light backgrounds
     return (255, 255, 255) if luminance < 0.5 else (0, 0, 0)
+
+
+def play_sound(path: str, volume: Optional[float] = None):
+    try:
+        sound = pygame.mixer.Sound(path)
+        if volume is not None:
+            sound.set_volume(volume)
+        sound.play()
+        return True
+    except (pygame.error, FileNotFoundError):
+        return False

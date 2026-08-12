@@ -301,12 +301,7 @@ class CraftingManager:
     def on_click(self, idx):
         if idx >= 0 and idx < len(self.craftables):
             self.selected_recipe = idx
-            try:
-                click_sound = pygame.mixer.Sound("assets/click.mp3")
-                click_sound.set_volume(0.5)
-                click_sound.play()
-            except:
-                pass
+            util.play_sound("assets/click.mp3", volume=0.5)
 
     def craft_selected(self):
         if self.selected_recipe < 0 or self.selected_recipe >= len(self.craftables):
@@ -954,7 +949,7 @@ class BlockManager:
                             if self.renderer.getTexture(asset_id) is None:
                                 try:
                                     self.renderer.loadTexture(asset_path, asset_id)
-                                except:
+                                except (pygame.error, FileNotFoundError):
                                     pass
 
                             if self.renderer.getTexture(asset_id):
@@ -1181,12 +1176,7 @@ class CookerManager:
             return
         if idx >= 0 and idx < len(self.recipe_list):
             self.selected_recipe = idx
-            try:
-                click_sound = pygame.mixer.Sound("assets/click.mp3")
-                click_sound.set_volume(0.5)
-                click_sound.play()
-            except:
-                pass
+            util.play_sound("assets/click.mp3", volume=0.5)
             if self.can_smelt(self.recipe_list[idx]):
                 self.start_smelting(idx)
 

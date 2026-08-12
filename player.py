@@ -310,13 +310,7 @@ class Player:
                 }
             )
 
-        # Play laser sound effect
-        try:
-            laser_sound = pygame.mixer.Sound("assets/laser_gun.mp3")
-            laser_sound.set_volume(0.5)  # 50% volume
-            laser_sound.play()
-        except:
-            pass  # Silently fail if sound not found
+        util.play_sound("assets/laser_gun.mp3", volume=0.5)
 
         self.lasergun_energy -= total_energy
         self.laser_cooldown = self.laser_cooldown_time
